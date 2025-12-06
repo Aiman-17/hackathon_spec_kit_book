@@ -12,13 +12,13 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://yourusername.github.io',
+  url: 'https://aiman-17.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/hackathon_spec_kit_book/',
 
   // GitHub pages deployment config.
-  organizationName: 'yourusername', // Usually your GitHub org/user name.
+  organizationName: 'aiman-17', // Usually your GitHub org/user name.
   projectName: 'hackathon_spec_kit_book', // Usually your repo name.
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
@@ -72,7 +72,7 @@ const config = {
             label: 'Textbook',
           },
           {
-            href: 'https://github.com/yourusername/hackathon_spec_kit_book',
+            href: 'https://github.com/aiman-17/hackathon_spec_kit_book',
             label: 'GitHub',
             position: 'right',
           },
@@ -117,11 +117,11 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/yourusername/hackathon_spec_kit_book',
+                href: 'https://github.com/aiman-17/hackathon_spec_kit_book',
               },
               {
                 label: 'Course Outline',
-                href: '#',
+                to: '/docs/intro',
               },
             ],
           },
