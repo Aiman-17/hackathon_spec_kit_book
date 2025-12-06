@@ -225,12 +225,16 @@ async def get_config() -> Dict[str, Any]:
 
 
 # ==========================================
-# API Routes (to be implemented in future phases)
+# API Routes
 # ==========================================
 
-# TODO: Phase 2 - Database and vector store initialization
-# TODO: Phase 3 - Content ingestion and embedding endpoints
-# TODO: Phase 4 - RAG chatbot endpoints (/api/chat)
+# Import routers
+from src.api.routers import ingestion, chat
+
+# Include routers
+app.include_router(ingestion.router)
+app.include_router(chat.router)
+
 # TODO: Phase 5 - Personalization endpoints (/api/personalization)
 # TODO: Phase 5 - Translation endpoints (/api/translate)
 # TODO: Phase 6 - Agent intelligence endpoints (/api/agent)

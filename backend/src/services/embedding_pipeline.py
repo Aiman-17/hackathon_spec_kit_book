@@ -167,12 +167,73 @@ class EmbeddingPipeline:
         self.total_tokens_used = 0
         self.total_requests = 0
 
+    async def embed_and_store_chunks(self, chunks: List[Dict[str, Any]]) -> int:
+        """
+        Generate embeddings for chunks and store them in Qdrant.
+
+        Args:
+            chunks: List of chunk dictionaries with content and metadata
+
+        Returns:
+            Number of vectors stored
+        """
+        from qdrant_client.models import PointStruct
+        from src.services.qdrant_manager import qdrant_manager
+
+        if not chunks:
+            return 0
+
+        try:
+            # Extract text content from chunks
+            texts = [chunk["content"] for chunk in chunks]
+
+            # Generate embeddings in batch
+            embeddings = await self.generate_embeddings_batch(texts)
+
+            # Create PointStruct objects for Qdrant
+            points = []
+            for i, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
+                # Use chunk_id as point ID (hash it to integer)
+                point_id = hash(chunk.get("chunk_id", f"chunk_{i}")) % (2**63)
+
+                # Create point with embedding and metadata
+                point = PointStruct(
+                    id=point_id,
+                    vector=embedding,
+                    payload={
+                        "content": chunk["content"],
+                        "chunk_id": chunk.get("chunk_id", f"chunk_{i}"),
+                        "chapter_id": chunk.get("chapter_id", "unknown"),
+                        "chapter_title": chunk.get("chapter_title", "Unknown"),
+                        "section_title": chunk.get("section_title", "Unknown Section"),
+                        "module_name": chunk.get("module_name", "Unknown Module"),
+                        "module_id": chunk.get("module_id", "unknown"),
+                        "chunk_type": chunk.get("chunk_type", "content"),
+                        "position": chunk.get("position", i),
+                    }
+                )
+                points.append(point)
+
+            # Store in Qdrant
+            qdrant_manager.upsert_points(points)
+
+            logger.info(f"✅ Stored {len(points)} vectors in Qdrant")
+
+            return len(points)
+
+        except Exception as e:
+            logger.error(f"Failed to embed and store chunks: {str(e)}")
+            raise
+
 
 # ==========================================
 # Global Instance
 # ==========================================
 
 embedding_pipeline = EmbeddingPipeline()
+
+# Alias for consistency with other services
+EmbeddingPipelineService = EmbeddingPipeline
 
 
 # ==========================================

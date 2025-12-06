@@ -76,6 +76,18 @@ class QdrantManager:
             self.client = None
             logger.info("Qdrant client closed")
 
+    def is_connected(self) -> bool:
+        """Check if Qdrant client is initialized and connected"""
+        if not self.client:
+            return False
+
+        try:
+            # Try to get collections to verify connection
+            self.client.get_collections()
+            return True
+        except Exception:
+            return False
+
     # ==========================================
     # Collection Management
     # ==========================================
@@ -225,7 +237,7 @@ class QdrantManager:
     def search(
         self,
         query_vector: List[float],
-        top_k: int = 5,
+        limit: int = 5,
         filter_conditions: Optional[Filter] = None,
         score_threshold: Optional[float] = None
     ) -> List[Dict[str, Any]]:
@@ -234,7 +246,7 @@ class QdrantManager:
 
         Args:
             query_vector: Query embedding vector (1536 dims)
-            top_k: Number of results to return
+            limit: Number of results to return
             filter_conditions: Optional Qdrant filter
             score_threshold: Minimum similarity score (0-1)
 
@@ -248,7 +260,7 @@ class QdrantManager:
             results = self.client.search(
                 collection_name=self.COLLECTION_NAME,
                 query_vector=query_vector,
-                limit=top_k,
+                limit=limit,
                 query_filter=filter_conditions,
                 score_threshold=score_threshold,
                 with_payload=True,
@@ -273,7 +285,7 @@ class QdrantManager:
         query_vector: List[float],
         module_id: Optional[str] = None,
         chapter_id: Optional[str] = None,
-        top_k: int = 5,
+        limit: int = 5,
         score_threshold: float = 0.5
     ) -> List[Dict[str, Any]]:
         """
@@ -283,7 +295,7 @@ class QdrantManager:
             query_vector: Query embedding
             module_id: Filter by module (e.g., "module-1")
             chapter_id: Filter by chapter (e.g., "01-introduction")
-            top_k: Number of results
+            limit: Number of results
             score_threshold: Minimum score
 
         Returns:
@@ -314,7 +326,7 @@ class QdrantManager:
 
         return self.search(
             query_vector=query_vector,
-            top_k=top_k,
+            limit=limit,
             filter_conditions=filter_conditions,
             score_threshold=score_threshold
         )

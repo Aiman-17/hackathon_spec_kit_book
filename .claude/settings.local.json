@@ -16,9 +16,16 @@
       "Bash(python -m src.services.postgres_manager:*)",
       "Bash(python src/services/postgres_manager.py:*)",
       "Bash(python:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(for:*)",
+      "Bash(do echo \"=== Generating Module 1, Chapter $i ===\")",
+      "Bash(done)",
+      "Bash(do echo \"=== Generating Module 2, Chapter $i ===\")",
+      "Bash(npm run build:*)",
+      "Bash(timeout 10 python:*)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enableAllProjectMcpServers": true
 }
