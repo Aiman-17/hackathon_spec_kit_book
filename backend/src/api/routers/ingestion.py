@@ -112,20 +112,62 @@ async def run_ingestion_task(source_path: str, force_reindex: bool):
                     content = f.read()
 
                 # Extract metadata from path (module-X/YY-chapter-name.md)
-                module_name = chapter_file.parent.name
-                chapter_filename = chapter_file.stem
+                module_name = chapter_file.parent.name  # e.g., "module-1"
+                chapter_filename = chapter_file.stem  # e.g., "01-introduction-to-physical-ai"
+
+                # Parse frontmatter to get metadata
+                import yaml
+                import re
+
+                # Extract YAML frontmatter
+                frontmatter_match = re.match(r'^---\n(.*?)\n---\n', content, re.DOTALL)
+                frontmatter_data = {}
+                if frontmatter_match:
+                    try:
+                        frontmatter_data = yaml.safe_load(frontmatter_match.group(1))
+                    except Exception as e:
+                        logger.warning(f"Failed to parse frontmatter for {chapter_file}: {e}")
+
+                # Create ChapterMetadata
+                from src.models.chapter import ChapterMetadata
+
+                # Extract module number from module_name (e.g., "module-1" -> 1)
+                module_num = int(module_name.split('-')[1]) if '-' in module_name else 1
+
+                # Get chapter number from frontmatter or filename
+                chapter_num = frontmatter_data.get('sidebar_position', 0)
+                if chapter_num == 0:
+                    # Try to extract from filename (e.g., "01-..." -> 1)
+                    num_match = re.match(r'^(\d+)-', chapter_filename)
+                    if num_match:
+                        chapter_num = int(num_match.group(1))
+                    else:
+                        chapter_num = 1
+
+                metadata = ChapterMetadata(
+                    module_id=module_name,
+                    module_title=f"Module {module_num}",
+                    chapter_id=chapter_filename,
+                    chapter_title=frontmatter_data.get('title', chapter_filename),
+                    chapter_number=chapter_num,
+                    tags=frontmatter_data.get('tags', []),
+                    description=frontmatter_data.get('description'),
+                    sidebar_position=frontmatter_data.get('sidebar_position')
+                )
 
                 # Process document into chunks
                 chunks = doc_service.process_document(
                     content=content,
-                    chapter_id=chapter_filename,
-                    module_name=module_name
+                    chapter_metadata=metadata
                 )
 
                 ingestion_state["chunks_created"] += len(chunks)
 
+                # Convert Pydantic models to dictionaries for embedding service
+                chunk_dicts = [chunk.model_dump() for chunk in chunks]
+
                 # Generate embeddings and store in Qdrant
-                vectors_count = await embedding_service.embed_and_store_chunks(chunks)
+                vectors_count = await embedding_service.embed_and_store_chunks(chunk_dicts)
                 ingestion_state["vectors_stored"] += vectors_count
 
                 ingestion_state["chapters_processed"] += 1
