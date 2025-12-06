@@ -21,11 +21,15 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
 
-import openai
+from openai import AsyncOpenAI
+import yaml
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from backend/.env
+SCRIPT_DIR = Path(__file__).parent
+REPO_ROOT = SCRIPT_DIR.parent
+ENV_PATH = REPO_ROOT / "backend" / ".env"
+load_dotenv(ENV_PATH)
 
 # Configure logging
 logging.basicConfig(
@@ -44,65 +48,62 @@ if not OPENAI_API_KEY:
     logger.error("OPENAI_API_KEY not found in environment variables")
     sys.exit(1)
 
-openai.api_key = OPENAI_API_KEY
+# Initialize OpenAI client (with OpenRouter support)
+# OpenRouter uses the same client interface but different base URL
+client = AsyncOpenAI(
+    api_key=OPENAI_API_KEY,
+    base_url="https://openrouter.ai/api/v1"
+)
 
 # Project paths
-REPO_ROOT = Path(__file__).parent.parent
 DOCS_DIR = REPO_ROOT / "frontend" / "docs"
 OUTPUT_DIR = DOCS_DIR
+COURSE_OUTLINE_PATH = REPO_ROOT / "docs-source" / "course-outline.yaml"
 
 
 # ==========================================
-# Chapter Metadata
+# Load Course Outline from YAML
 # ==========================================
 
-CHAPTER_METADATA = {
-    "module-1": {
-        "title": "Module 1: Foundations of Physical AI & Robotics",
-        "chapters": [
-            {"id": "01-introduction-to-physical-ai", "title": "Introduction to Physical AI", "keywords": ["physical AI", "embodied intelligence", "robotics overview"]},
-            {"id": "02-history-evolution-robotics", "title": "History and Evolution of Robotics", "keywords": ["robotics history", "industrial robots", "humanoid development"]},
-            {"id": "03-key-concepts-terminology", "title": "Key Concepts and Terminology", "keywords": ["degrees of freedom", "kinematics", "dynamics", "end effector"]},
-            {"id": "04-hardware-components-sensors", "title": "Hardware Components and Sensors", "keywords": ["sensors", "lidar", "cameras", "IMU", "force sensors"]},
-            {"id": "05-actuators-control-systems", "title": "Actuators and Control Systems", "keywords": ["motors", "servos", "hydraulics", "PID control"]},
-            {"id": "06-ethical-considerations", "title": "Ethical Considerations in Robotics", "keywords": ["robot ethics", "safety", "privacy", "accountability"]},
-        ]
-    },
-    "module-2": {
-        "title": "Module 2: Simulation Environments & Robotics Software",
-        "chapters": [
-            {"id": "07-introduction-simulation", "title": "Introduction to Robotics Simulation", "keywords": ["simulation", "virtual testing", "physics engines"]},
-            {"id": "08-nvidia-isaac-sim", "title": "NVIDIA Isaac Sim", "keywords": ["Isaac Sim", "Omniverse", "GPU acceleration", "photorealistic simulation"]},
-            {"id": "09-gazebo-simulator", "title": "Gazebo Simulator", "keywords": ["Gazebo", "ROS integration", "sensor simulation"]},
-            {"id": "10-ros2-fundamentals", "title": "ROS 2 Fundamentals", "keywords": ["ROS 2", "nodes", "topics", "services", "actions"]},
-            {"id": "11-ros2-advanced-topics", "title": "ROS 2 Advanced Topics", "keywords": ["DDS", "quality of service", "lifecycle nodes", "composition"]},
-            {"id": "12-integration-simulation-ros2", "title": "Integration of Simulation with ROS 2", "keywords": ["sim-to-real", "ROS 2 bridge", "testing pipelines"]},
-        ]
-    },
-    "module-3": {
-        "title": "Module 3: Advanced Perception, Navigation & Control",
-        "chapters": [
-            {"id": "13-computer-vision-robotics", "title": "Computer Vision for Robotics", "keywords": ["computer vision", "object detection", "semantic segmentation"]},
-            {"id": "14-sensor-fusion-techniques", "title": "Sensor Fusion Techniques", "keywords": ["sensor fusion", "Kalman filter", "particle filter", "multi-modal"]},
-            {"id": "15-slam-mapping", "title": "SLAM and Mapping", "keywords": ["SLAM", "localization", "mapping", "graph optimization"]},
-            {"id": "16-path-planning-algorithms", "title": "Path Planning Algorithms", "keywords": ["A*", "RRT", "Dijkstra", "motion planning"]},
-            {"id": "17-motion-control-systems", "title": "Motion Control Systems", "keywords": ["trajectory control", "inverse kinematics", "dynamics control"]},
-            {"id": "18-machine-learning-perception", "title": "Machine Learning for Perception", "keywords": ["deep learning", "neural networks", "CNN", "object recognition"]},
-            {"id": "19-real-time-decision-making", "title": "Real-Time Decision Making", "keywords": ["decision making", "behavior trees", "finite state machines"]},
-        ]
-    },
-    "module-4": {
-        "title": "Module 4: Humanoid AI Systems & Capstone Development",
-        "chapters": [
-            {"id": "20-humanoid-robotics-overview", "title": "Humanoid Robotics Overview", "keywords": ["humanoid robots", "bipedal systems", "anthropomorphic design"]},
-            {"id": "21-bipedal-locomotion", "title": "Bipedal Locomotion", "keywords": ["walking", "balance", "ZMP", "gait generation"]},
-            {"id": "22-human-robot-interaction", "title": "Human-Robot Interaction", "keywords": ["HRI", "natural language", "gestures", "social robotics"]},
-            {"id": "23-manipulation-grasping", "title": "Manipulation and Grasping", "keywords": ["grasping", "manipulation", "dexterous hands", "force control"]},
-            {"id": "24-integration-ai-systems", "title": "Integration of AI Systems", "keywords": ["AI integration", "multi-modal AI", "reinforcement learning"]},
-            {"id": "25-capstone-project-guide", "title": "Capstone Project Guide", "keywords": ["capstone", "project planning", "system integration", "deployment"]},
-        ]
-    }
-}
+def load_course_outline() -> Dict:
+    """Load course outline from YAML file"""
+    try:
+        with open(COURSE_OUTLINE_PATH, 'r', encoding='utf-8') as f:
+            return yaml.safe_load(f)
+    except Exception as e:
+        logger.error(f"Failed to load course outline: {str(e)}")
+        sys.exit(1)
+
+
+def build_chapter_metadata() -> Dict:
+    """Build chapter metadata from course outline"""
+    outline = load_course_outline()
+    metadata = {}
+
+    for module in outline['modules']:
+        module_id = module['id']
+        metadata[module_id] = {
+            "title": f"Module {module['number']}: {module['title']}",
+            "chapters": []
+        }
+
+        for chapter in module['chapters']:
+            # Generate keywords from chapter title
+            title_words = chapter['title'].lower().split()
+            keywords = [chapter['title']] + title_words[:5]  # Use title + first 5 words as keywords
+
+            metadata[module_id]["chapters"].append({
+                "id": chapter['slug'],
+                "title": chapter['title'],
+                "number": chapter['number'],
+                "keywords": keywords
+            })
+
+    return metadata
+
+
+# Load chapter metadata
+CHAPTER_METADATA = build_chapter_metadata()
 
 
 # ==========================================
@@ -111,28 +112,47 @@ CHAPTER_METADATA = {
 
 SYSTEM_PROMPT = """You are an expert robotics and AI educator creating a comprehensive, AI-native textbook on Physical AI and Humanoid Robotics.
 
-Your chapters must be:
-1. **Educational Excellence**: Clear, engaging, technically accurate with real-world examples
-2. **Practical Focus**: Include code examples, simulation setups, and hands-on exercises
-3. **Progressive Complexity**: Build on previous concepts, suitable for advanced undergraduates
-4. **Industry-Relevant**: Reference current technologies (ROS 2, NVIDIA Isaac Sim, Gazebo)
-5. **Well-Structured**: Use clear headings, bullet points, diagrams (as Mermaid), and summaries
+**CRITICAL REQUIREMENTS - Chapter Structure (MUST INCLUDE ALL):**
 
-Structure each chapter with:
-- Introduction (motivation and learning objectives)
-- Core Concepts (3-5 main sections with subsections)
-- Practical Examples (code snippets in Python/ROS 2)
-- Hands-On Exercises (simulation tasks, coding challenges)
-- Summary and Key Takeaways
-- Further Reading and Resources
+1. **Docusaurus Frontmatter** (at very top):
+```yaml
+---
+title: "[Chapter Title]"
+sidebar_position: [number]
+description: "[Brief 1-sentence description]"
+tags: [relevant, keywords, here]
+---
+```
 
-Use Docusaurus-compatible Markdown with:
-- Mermaid diagrams for flowcharts and architectures
-- Code blocks with language tags (```python, ```bash, ```yaml)
-- Admonitions (:::tip, :::note, :::warning, :::info)
-- Math equations in LaTeX where appropriate
+2. **Summary** (≥3 sentences) - Overview of what the chapter covers
 
-Target length: 2500-3500 words per chapter."""
+3. **Learning Objectives** (≥3 objectives):
+   - Use Bloom's taxonomy verbs: explain, implement, analyze, evaluate, create
+   - Example: "Implement a ROS 2 publisher node that sends sensor data at 10 Hz"
+
+4. **Prerequisites** (explicit list or state "None")
+
+5. **Main Content** (3-5 major H2 sections with H3 subsections):
+   - Clear, engaging explanations
+   - Code examples in Python/ROS 2 with proper syntax highlighting
+   - Mermaid diagrams for architectures
+   - Real-world examples and applications
+
+6. **Key Takeaways** (≥3 bullet points summarizing main concepts)
+
+7. **Glossary** (≥5 technical terms with definitions)
+
+8. **Review Questions** (≥3 questions aligned with learning objectives)
+
+**Formatting Requirements:**
+- Use consistent heading hierarchy (H1 → H2 → H3, no level skipping)
+- Code blocks MUST specify language: ```python, ```bash, ```yaml
+- Define technical terms on first use
+- NO placeholder text (TODO, TBD, [INSERT_HERE], etc.)
+- Use Docusaurus admonitions: :::tip, :::note, :::warning, :::info
+- Include Mermaid diagrams where helpful
+
+**Target**: 2500-3500 words, technically accurate, pedagogically rigorous."""
 
 
 # ==========================================
@@ -149,7 +169,7 @@ async def generate_chapter_content(
 
     Args:
         module_id: Module identifier (e.g., "module-1")
-        chapter: Chapter metadata dict with id, title, keywords
+        chapter: Chapter metadata dict with id, title, keywords, number
         module_title: Full module title
 
     Returns:
@@ -157,31 +177,36 @@ async def generate_chapter_content(
     """
     chapter_id = chapter["id"]
     chapter_title = chapter["title"]
+    chapter_number = chapter["number"]
     keywords = ", ".join(chapter["keywords"])
 
     user_prompt = f"""Generate a comprehensive textbook chapter for:
 
 **Module**: {module_title}
-**Chapter**: {chapter_title}
+**Chapter Number**: {chapter_number}
+**Chapter Title**: {chapter_title}
 **Focus Keywords**: {keywords}
 
-This chapter should be suitable for advanced undergraduate students studying robotics and AI.
-Include practical examples, code snippets, and exercises.
-Use Docusaurus Markdown format with Mermaid diagrams where appropriate.
+IMPORTANT:
+- Set sidebar_position to {chapter_number} in the frontmatter
+- This chapter is for advanced undergraduate students studying robotics and AI
+- Include practical code examples in Python/ROS 2
+- Add Mermaid diagrams for system architectures
+- Follow ALL requirements from the system prompt (Summary, Learning Objectives, Prerequisites, Key Takeaways, Glossary, Review Questions)
 
-Generate the full chapter content now."""
+Generate the complete chapter content now with proper Docusaurus frontmatter."""
 
     logger.info(f"Generating chapter: {module_id}/{chapter_id}")
 
     try:
-        response = await openai.ChatCompletion.acreate(
-            model="gpt-4-turbo-preview",
+        response = await client.chat.completions.create(
+            model="anthropic/claude-3-haiku",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_prompt}
             ],
             temperature=0.7,
-            max_tokens=4096,
+            max_tokens=3500,  # Reduced for cost-effectiveness while maintaining quality
         )
 
         content = response.choices[0].message.content

@@ -84,6 +84,9 @@ credentials.json
 *.sublime-workspace
 .DS_Store
 
+# Claude Code MCP configuration
+.mcp.json
+
 # ====================
 # Logs
 # ====================
