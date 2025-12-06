@@ -37,7 +37,11 @@ class EmbeddingPipeline:
     MAX_TOKENS_PER_REQUEST = 8000  # Conservative limit
 
     def __init__(self):
-        self.client = AsyncOpenAI(api_key=settings.openai_api_key)
+        # Use OpenRouter's API endpoint (compatible with OpenAI SDK)
+        self.client = AsyncOpenAI(
+            api_key=settings.openai_api_key,
+            base_url="https://openrouter.ai/api/v1"
+        )
         self.total_tokens_used = 0
         self.total_requests = 0
 

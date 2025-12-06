@@ -122,7 +122,10 @@ async def generate_rag_response(query: str, relevant_chunks: List[Dict[str, Any]
     try:
         from openai import AsyncOpenAI
 
-        client = AsyncOpenAI(api_key=settings.openai_api_key)
+        client = AsyncOpenAI(
+            api_key=settings.openai_api_key,
+            base_url="https://openrouter.ai/api/v1"
+        )
 
         # Construct context from relevant chunks
         context_parts = []
