@@ -159,6 +159,11 @@ class DocumentIngestionService:
             if not content or content.strip() == "":
                 continue
 
+            # Skip sections that are too short (< 100 characters)
+            if len(content.strip()) < 100:
+                logger.debug(f"Skipping short section: {section['heading']} ({len(content)} chars)")
+                continue
+
             token_count = self.count_tokens(content)
 
             # Check for code blocks and diagrams

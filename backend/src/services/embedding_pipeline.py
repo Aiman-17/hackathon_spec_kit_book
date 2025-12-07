@@ -188,8 +188,13 @@ class EmbeddingPipeline:
             return 0
 
         try:
-            # Extract text content from chunks
-            texts = [chunk["content"] for chunk in chunks]
+            # Extract text content from chunks (support both dict and Pydantic objects)
+            texts = []
+            for chunk in chunks:
+                if isinstance(chunk, dict):
+                    texts.append(chunk["content"])
+                else:
+                    texts.append(chunk.content)
 
             # Generate embeddings in batch
             embeddings = await self.generate_embeddings_batch(texts)
@@ -197,23 +202,41 @@ class EmbeddingPipeline:
             # Create PointStruct objects for Qdrant
             points = []
             for i, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
+                # Extract chunk data (support both dict and Pydantic objects)
+                if isinstance(chunk, dict):
+                    content = chunk["content"]
+                    chunk_id = chunk.get("chunk_id", f"chunk_{i}")
+                    chapter_id = chunk.get("chapter_id", "unknown")
+                    chapter_title = chunk.get("chapter_title", "Unknown")
+                    section_title = chunk.get("section_title", "Unknown Section")
+                    module_name = chunk.get("module_name", "Unknown Module")
+                    module_id = chunk.get("module_id", "unknown")
+                else:
+                    content = chunk.content
+                    chunk_id = f"{chunk.chapter_metadata.chapter_id}_chunk_{i}"
+                    chapter_id = chunk.chapter_metadata.chapter_id
+                    chapter_title = chunk.chapter_metadata.chapter_title
+                    section_title = chunk.chunk_metadata.heading
+                    module_name = chunk.chapter_metadata.module_title
+                    module_id = chunk.chapter_metadata.module_id
+
                 # Use chunk_id as point ID (hash it to integer)
-                point_id = hash(chunk.get("chunk_id", f"chunk_{i}")) % (2**63)
+                point_id = hash(chunk_id) % (2**63)
 
                 # Create point with embedding and metadata
                 point = PointStruct(
                     id=point_id,
                     vector=embedding,
                     payload={
-                        "content": chunk["content"],
-                        "chunk_id": chunk.get("chunk_id", f"chunk_{i}"),
-                        "chapter_id": chunk.get("chapter_id", "unknown"),
-                        "chapter_title": chunk.get("chapter_title", "Unknown"),
-                        "section_title": chunk.get("section_title", "Unknown Section"),
-                        "module_name": chunk.get("module_name", "Unknown Module"),
-                        "module_id": chunk.get("module_id", "unknown"),
-                        "chunk_type": chunk.get("chunk_type", "content"),
-                        "position": chunk.get("position", i),
+                        "content": content,
+                        "chunk_id": chunk_id,
+                        "chapter_id": chapter_id,
+                        "chapter_title": chapter_title,
+                        "section_title": section_title,
+                        "module_name": module_name,
+                        "module_id": module_id,
+                        "chunk_type": "content",
+                        "position": i,
                     }
                 )
                 points.append(point)
