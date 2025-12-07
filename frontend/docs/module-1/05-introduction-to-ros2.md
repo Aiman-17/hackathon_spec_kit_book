@@ -1,5 +1,6 @@
 ---
 title: Introduction to Robot Operating System (ROS 2)
+slug: introduction-to-ros2
 sidebar_position: 5
 description: "An introductory overview of the Robot Operating System (ROS 2), its architecture, and how to get started with developing robotics applications."
 tags: [ros, ros2, robotics, architecture, introduction]

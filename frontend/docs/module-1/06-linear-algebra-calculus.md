@@ -1,5 +1,6 @@
 ---
 title: "Linear Algebra & Calculus for Robot Motion"
+slug: linear-algebra-calculus
 sidebar_position: 6
 description: Explore the fundamental mathematical concepts of linear algebra and calculus that underpin the motion and control of robotic systems.
 tags: [linear algebra, calculus, robot motion, robotics, AI]

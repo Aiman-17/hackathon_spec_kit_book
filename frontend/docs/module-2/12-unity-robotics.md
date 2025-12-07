@@ -1,5 +1,6 @@
 ---
 title: "Unity for Robotics Visualization & HRI"
+slug: unity-robotics
 sidebar_position: 12
 description: Explore the use of the Unity game engine for creating immersive robotics simulations and human-robot interaction interfaces.
 tags: [unity, robotics, visualization, hri]

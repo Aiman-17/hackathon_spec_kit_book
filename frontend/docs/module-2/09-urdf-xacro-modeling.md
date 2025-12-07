@@ -1,5 +1,6 @@
 ---
 title: "URDF & XACRO for Robot Modeling"
+slug: urdf-xacro-modeling
 sidebar_position: 9
 description: Explore the Unified Robot Description Format (URDF) and XACRO for creating detailed robot models in simulation environments.
 tags: [urdf, xacro, robot, modeling, simulation]

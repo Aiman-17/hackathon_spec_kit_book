@@ -1,5 +1,6 @@
 ---
 title: Multi-Agent Coordination for Robotics
+slug: multi-agent-coordination
 sidebar_position: 23
 description: Explore techniques for coordinating multiple robotic agents to achieve complex tasks.
 tags: [multi-agent, coordination, robotics]

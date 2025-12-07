@@ -1,5 +1,6 @@
 ---
 title: AI Agents for Autonomous Robotics
+slug: ai-agents-robotics
 sidebar_position: 21
 description: Explore the role of AI agents in enabling autonomous robotics systems.
 tags: [ai, agents, for, autonomous, robotics]

@@ -1,5 +1,6 @@
 ---
 title: Gazebo Classic vs. Gazebo Garden (Ignition)
+slug: gazebo-comparison
 sidebar_position: 10
 description: "Explore the differences between Gazebo Classic and Gazebo Garden (Ignition), two popular robotics simulation environments."
 tags: [gazebo, classic, vs., gazebo, garden]

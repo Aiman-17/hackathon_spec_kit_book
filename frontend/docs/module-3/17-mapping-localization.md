@@ -1,5 +1,6 @@
 ---
 title: "Mapping & Localization"
+slug: mapping-localization
 sidebar_position: 17
 description: Explore advanced techniques for mapping and localization in robotics.
 tags: [mapping, localization, SLAM, navigation, robotics]

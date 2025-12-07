@@ -42,7 +42,7 @@ import styles from './intro.module.css';
           <div className="stat-label">Modules</div>
         </div>
         <div className="stat-item">
-          <div className="stat-number">25</div>
+          <div className="stat-number">24</div>
           <div className="stat-label">Chapters</div>
         </div>
         <div className="stat-item">
@@ -115,7 +115,7 @@ This textbook provides a complete journey through the foundations, techniques, a
 
 ## Course Structure
 
-This course is organized into **4 comprehensive modules** with **25 hands-on chapters**:
+This course is organized into **4 comprehensive modules** with **24 hands-on chapters**:
 
 ### 📘 Module 1: Foundations of Physical AI & Robotics
 
@@ -123,7 +123,6 @@ Build your foundation in Physical AI, robotics hardware, mathematics, and ROS 2 
 
 **Chapters:**
 - Introduction to Physical AI
-- Humanoid Robotics Overview
 - Robot Hardware: Sensors, Actuators, Control Systems
 - Mathematics for Robotics (Kinematics & Dynamics)
 - Introduction to Robot Operating System (ROS 2)

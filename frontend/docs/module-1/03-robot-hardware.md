@@ -1,5 +1,6 @@
 ---
 title: "Robot Hardware: Sensors, Actuators, Control Systems"
+slug: robot-hardware
 sidebar_position: 3
 description: "Explore the core hardware components of robots, including sensors, actuators, and control systems, and how they work together to enable physical AI applications."
 tags: [robot, hardware, sensors, actuators, control]

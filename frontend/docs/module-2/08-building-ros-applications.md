@@ -1,5 +1,6 @@
 ---
 title: Building Robot Applications with ROS Packages
+slug: building-ros-applications
 sidebar_position: 8
 description: "Learn how to build and integrate ROS packages to create robust, modular robot applications."
 tags: [ros, packages, building, robot, applications]

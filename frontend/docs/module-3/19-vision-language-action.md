@@ -1,5 +1,6 @@
 ---
 title: Vision-Language-Action Pipelines (VLA)
+slug: vision-language-action
 sidebar_position: 19
 description: "Explore the integration of computer vision, natural language processing, and robotic control in Vision-Language-Action (VLA) pipelines for advanced AI systems."
 tags: [vision-language-action, pipelines, vla]

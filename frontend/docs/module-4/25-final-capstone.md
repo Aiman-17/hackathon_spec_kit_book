@@ -1,5 +1,6 @@
 ---
 title: "Final Capstone: Full Humanoid Robotics System"
+slug: final-capstone
 sidebar_position: 25
 description: Implement a complete humanoid robotics system for a final capstone project.
 tags: [final, capstone, full, humanoid, robotics]

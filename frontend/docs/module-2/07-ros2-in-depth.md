@@ -1,5 +1,6 @@
 ---
 title: "ROS 2 in Depth: Nodes, Topics, Services, Actions"
+slug: ros2-in-depth
 sidebar_position: 7
 description: "Explore the core ROS 2 communication concepts of nodes, topics, services, and actions in depth."
 tags: [ros2, nodes, topics, services, actions, communication]

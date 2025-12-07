@@ -1,5 +1,6 @@
 ---
 title: Nav2 Navigation Stack
+slug: nav2-navigation
 sidebar_position: 16
 description: Explore the advanced Nav2 navigation stack for mobile robot navigation and control.
 tags: [nav2, navigation, stack, ros2]

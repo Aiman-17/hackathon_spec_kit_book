@@ -56,13 +56,13 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: 'img/social-card.jpg',
+      image: 'https://www.shutterstock.com/image-illustration/hr-human-resources-automation-rpa-260nw-1984127879.jpg',
 
       navbar: {
         title: 'Physical AI & Humanoid Robotics',
         logo: {
           alt: 'Robotics Logo',
-          src: 'img/logo.svg',
+          src: 'https://t4.ftcdn.net/jpg/05/64/01/55/360_F_564015595_9IqM3dj9un7b8sf7QZ5bw83UcYShaLCC.jpg',
           href: 'docs/intro',  // Link to intro page instead of homepage
         },
         items: [
@@ -92,7 +92,7 @@ const config = {
               },
               {
                 label: 'Module 1: Foundations',
-                to: 'docs/module-1/01-introduction-to-physical-ai',
+                to: 'docs/module-1/introduction-to-physical-ai',
               },
             ],
           },
@@ -151,11 +151,11 @@ const config = {
     }),
 
   // Markdown configuration
-  markdown: {
-    mermaid: true,
-  },
+  // markdown: {
+  //   mermaid: true,
+  // },
 
-  themes: ['@docusaurus/theme-mermaid'],
+  // themes: ['@docusaurus/theme-mermaid'],
 };
 
 module.exports = config;

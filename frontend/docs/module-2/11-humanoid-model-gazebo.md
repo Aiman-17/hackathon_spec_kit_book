@@ -1,5 +1,6 @@
 ---
 title: Building a Humanoid Model in Gazebo
+slug: humanoid-model-gazebo
 sidebar_position: 11
 description: Learn how to build and simulate a humanoid robot model in the Gazebo simulation environment.
 tags: [gazebo, humanoid, model, simulation, robotics, ros2]

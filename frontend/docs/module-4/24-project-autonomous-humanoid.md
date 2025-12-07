@@ -1,5 +1,6 @@
 ---
 title: "Project: Build an Autonomous Humanoid Simulation"
+slug: project-autonomous-humanoid
 sidebar_position: 24
 description: Develop an autonomous humanoid robot simulation using ROS 2 and Gazebo.
 tags: [project, build, autonomous, humanoid, simulation]

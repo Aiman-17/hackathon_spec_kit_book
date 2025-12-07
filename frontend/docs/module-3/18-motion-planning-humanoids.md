@@ -1,5 +1,6 @@
 ---
 title: Motion Planning for Humanoids (Bipedal Control)
+slug: motion-planning-humanoids
 sidebar_position: 18
 description: Explore advanced motion planning techniques for humanoid robots with a focus on bipedal control.
 tags: [motion planning, humanoids, bipedal, control, robotics, AI]

@@ -1,5 +1,6 @@
 ---
 title: "End-to-End Humanoid Pipeline: Sensing → Reasoning → Acting"
+slug: end-to-end-humanoid-pipeline
 sidebar_position: 22
 description: "This chapter explores the end-to-end pipeline for humanoid systems, covering sensing, reasoning, and actuation."
 tags: [end-to-end, humanoid, pipeline, sensing, reasoning, acting]

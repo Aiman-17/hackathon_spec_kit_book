@@ -1,5 +1,6 @@
 ---
 title: "Isaac ROS Perception Pipelines (VSLAM, AprilTags)"
+slug: isaac-ros-perception
 sidebar_position: 15
 description: "Explore advanced perception capabilities in Isaac ROS, including Visual SLAM and AprilTag detection."
 tags: [isaac, ros, perception, pipelines, vslam, apriltags]

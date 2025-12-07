@@ -26,7 +26,6 @@ const sidebars = {
       collapsed: false,
       items: [
         'module-1/introduction-to-physical-ai',
-        'module-1/humanoid-robotics-overview',
         'module-1/robot-hardware',
         'module-1/mathematics-for-robotics',
         'module-1/introduction-to-ros2',

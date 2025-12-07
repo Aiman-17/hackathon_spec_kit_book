@@ -1,5 +1,6 @@
 ---
 title: "Integrating Perception, Action & Control"
+slug: integrating-perception-action-control
 sidebar_position: 20
 description: "Explore the integration of perception, action, and control in advanced humanoid AI systems."
 tags: [Perception, Action, Control, Humanoid Robotics, System Integration]

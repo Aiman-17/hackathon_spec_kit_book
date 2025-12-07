@@ -1,5 +1,6 @@
 ---
 title: "Mathematics for Robotics (Kinematics & Dynamics)"
+slug: mathematics-for-robotics
 sidebar_position: 4
 description: Explore the fundamental mathematical concepts of kinematics and dynamics that underpin the design and control of robotic systems.
 tags: [mathematics, for, robotics, kinematics, dynamics]

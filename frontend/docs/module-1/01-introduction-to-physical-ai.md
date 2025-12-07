@@ -1,5 +1,6 @@
 ---
 title: Introduction to Physical AI
+slug: introduction-to-physical-ai
 sidebar_position: 1
 description: "An overview of the foundations of Physical AI, including key concepts, architectures, and applications."
 tags: [introduction, to, physical, ai]

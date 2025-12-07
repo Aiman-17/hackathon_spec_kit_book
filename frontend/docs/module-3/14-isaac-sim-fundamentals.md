@@ -1,5 +1,6 @@
 ---
 title: "NVIDIA Isaac Sim: Set Up & Fundamentals"
+slug: isaac-sim-fundamentals
 sidebar_position: 14
 description: "Explore the setup and fundamental concepts of the NVIDIA Isaac Sim, a powerful robotics simulation platform."
 tags: [nvidia, isaac, sim, set up, fundamentals]

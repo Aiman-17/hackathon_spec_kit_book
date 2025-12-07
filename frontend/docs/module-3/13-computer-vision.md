@@ -1,5 +1,6 @@
 ---
 title: Computer Vision for Robotics
+slug: computer-vision
 sidebar_position: 13
 description: Explore the fundamental concepts and practical applications of computer vision in robotics.
 tags: [computer vision, robotics, perception, python, ros2]
