@@ -140,8 +140,6 @@ graph TB
 
 The choice of control architecture depends on factors such as the complexity of the robot, the required level of autonomy, and the desired balance between centralized decision-making and distributed control.
 
-```
-
 ### Real-World Applications of Humanoid Robotics
 
 Humanoid robots have a wide range of real-world applications, including:
