@@ -63,7 +63,7 @@ const config = {
         logo: {
           alt: 'Robotics Logo',
           src: 'img/logo.svg',
-          href: '/docs/intro',  // Link to intro page instead of homepage
+          href: 'docs/intro',  // Link to intro page instead of homepage
         },
         items: [
           {
@@ -88,11 +88,11 @@ const config = {
             items: [
               {
                 label: 'Introduction',
-                to: '/docs/intro',
+                to: 'docs/intro',
               },
               {
                 label: 'Module 1: Foundations',
-                to: '/docs/module-1/introduction-to-physical-ai',
+                to: 'docs/module-1/01-introduction-to-physical-ai',
               },
             ],
           },
@@ -122,7 +122,7 @@ const config = {
               },
               {
                 label: 'Course Outline',
-                to: '/docs/intro',
+                to: 'docs/intro',
               },
             ],
           },

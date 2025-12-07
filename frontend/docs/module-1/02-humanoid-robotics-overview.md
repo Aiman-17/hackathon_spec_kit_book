@@ -66,37 +66,28 @@ from sensor_msgs.msg import JointState
 class HumanoidSimulator(Node):
     def __init__(self):
         super().__init__('humanoid_simulator')
-
-        # Define robot joint names and initial positions
         self.joint_names = ['hip_roll', 'hip_pitch', 'knee', 'ankle_pitch', 'ankle_roll']
         self.joint_positions = [0.0, 0.0, 0.0, 0.0, 0.0]
 
-        # Publishers and subscribers
         self.joint_state_pub = self.create_publisher(JointState, 'joint_states', 10)
         self.pose_pub = self.create_publisher(Pose, 'robot_pose', 10)
         self.twist_pub = self.create_publisher(Twist, 'robot_twist', 10)
 
-        # Simulation loop
         self.timer = self.create_timer(0.01, self.simulate_robot)
 
     def simulate_robot(self):
-        # Update joint positions based on some control logic
         self.update_joint_positions()
-
-        # Publish joint states
         joint_state_msg = JointState()
         joint_state_msg.name = self.joint_names
         joint_state_msg.position = self.joint_positions
         self.joint_state_pub.publish(joint_state_msg)
 
-        # Publish robot pose and twist (simplified for this example)
         pose_msg = Pose()
         twist_msg = Twist()
         self.pose_pub.publish(pose_msg)
         self.twist_pub.publish(twist_msg)
 
     def update_joint_positions(self):
-        # Implement your joint position update logic here
         pass
 
 def main(args=None):
@@ -108,10 +99,6 @@ def main(args=None):
 if __name__ == '__main__':
     main()
 
-This example demonstrates a basic ROS 2 node that simulates the joint state and pose/twist of a humanoid robot. In a real-world application, you would need to implement the `update_joint_positions()` method to update the joint positions based on your control algorithms and the robot's kinematics and dynamics.
-
-```
-
 ### Control Architectures in Humanoid Robotics
 
 Humanoid robots often employ complex control architectures to coordinate the various subsystems and ensure stable, efficient, and human-like movement. Two common approaches include:
@@ -120,23 +107,30 @@ Humanoid robots often employ complex control architectures to coordinate the var
 
 2. **Decentralized Control**: This approach distributes the control across multiple, interconnected modules that operate semi-independently, with each module responsible for a specific aspect of the robot's behavior, such as balance, locomotion, or manipulation.
 
-:::mermaid
+```markdown
+```text
 graph TB
-    subgraph Hierarchical Control
-        A[High-Level Planner]
-        B[Motion Controller]
-        C[Joint Controllers]
+    subgraph Hierarchical_Control
+        A["High-Level Planner"]
+        B["Motion Controller"]
+        C["Joint Controllers"]
         A --> B
         B --> C
     end
-    subgraph Decentralized Control
-        D[Balance Controller]
-        E[Locomotion Controller]
-        F[Manipulation Controller]
+
+    subgraph Decentralized_Control
+        D["Balance Controller"]
+        E["Locomotion Controller"]
+        F["Manipulation Controller"]
         D <--> E
         E <--> F
     end
-```
+
+    C --> G["Physical World"]
+
+```markdown
+```text
+
 
 The choice of control architecture depends on factors such as the complexity of the robot, the required level of autonomy, and the desired balance between centralized decision-making and distributed control.
 
