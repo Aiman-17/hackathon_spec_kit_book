@@ -95,13 +95,14 @@ async def retrieve_relevant_chunks(query: str, max_results: int = 3, context: Op
         search_results = qdrant_manager.search(
             query_vector=query_embedding,
             limit=max_results,
-            score_threshold=0.7  # Minimum similarity score
+            score_threshold=0.5  # Lowered from 0.7 - more lenient matching
         )
 
+        logger.info(f"Found {len(search_results)} results for query")
         return search_results
 
     except Exception as e:
-        logger.error(f"Failed to retrieve chunks: {str(e)}")
+        logger.error(f"Failed to retrieve chunks: {str(e)}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to retrieve relevant content: {str(e)}"
