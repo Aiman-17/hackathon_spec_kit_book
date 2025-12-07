@@ -10,7 +10,7 @@ redis==5.0.1
 
 # AI/ML & Embeddings
 openai==1.7.2
-qdrant-client==1.7.0
+qdrant-client==1.11.3
 tiktoken==0.5.2
 
 # Data Validation & Settings
