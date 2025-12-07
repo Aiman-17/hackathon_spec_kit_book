@@ -59,6 +59,7 @@ graph LR
     Perception --> Reasoning
     Reasoning --> Actuation
     Actuation --> Perception
+```
 
 ## Implementing a Physical AI System in ROS 2
 

@@ -4,18 +4,101 @@ title: Welcome to Physical AI & Humanoid Robotics
 sidebar_position: 0
 ---
 
-# Physical AI & Humanoid Robotics
+import styles from './intro.module.css';
 
-<div className="hero-section">
-
-## Build Intelligent Robotic Systems from the Ground Up
-
-Welcome to the comprehensive textbook on **Physical AI and Humanoid Robotics**. This AI-native learning platform combines cutting-edge robotics education with interactive AI assistance to help you master the complexities of building intelligent, embodied systems.
-
+<div className="hero-banner">
+  <div className="hero-content">
+    <div className="hero-text">
+      <div className="hero-logo">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="30" r="28" fill="#7C3AED" opacity="0.1"/>
+          <path d="M30 10C18.954 10 10 18.954 10 30C10 41.046 18.954 50 30 50C41.046 50 50 41.046 50 30C50 18.954 41.046 10 30 10ZM30 45C21.716 45 15 38.284 15 30C15 21.716 21.716 15 30 15C38.284 15 45 21.716 45 30C45 38.284 38.284 45 30 45Z" fill="#7C3AED"/>
+          <circle cx="25" cy="25" r="3" fill="#7C3AED"/>
+          <circle cx="35" cy="25" r="3" fill="#7C3AED"/>
+          <path d="M30 32C27 32 25 34 25 36H35C35 34 33 32 30 32Z" fill="#7C3AED"/>
+          <rect x="28" y="30" width="4" height="8" fill="#7C3AED" opacity="0.5"/>
+        </svg>
+      </div>
+      <h1 className="hero-title">Physical AI & Humanoid Robotics</h1>
+      <p className="hero-subtitle">Build Intelligent Robotic Systems from the Ground Up</p>
+      <p className="hero-description">
+        Welcome to the comprehensive, AI-native textbook on Physical AI and Humanoid Robotics.
+        Master the art of building intelligent, embodied systems with interactive AI assistance.
+      </p>
+      <div className="hero-buttons">
+        <a href="/docs/module-1/01-introduction-to-physical-ai" className="btn btn-primary">
+          Start Learning
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+          </svg>
+        </a>
+        <a href="#course-structure" className="btn btn-secondary">
+          Explore Modules
+        </a>
+      </div>
+      <div className="hero-stats">
+        <div className="stat-item">
+          <div className="stat-number">4</div>
+          <div className="stat-label">Modules</div>
+        </div>
+        <div className="stat-item">
+          <div className="stat-number">25</div>
+          <div className="stat-label">Chapters</div>
+        </div>
+        <div className="stat-item">
+          <div className="stat-number">AI</div>
+          <div className="stat-label">Powered</div>
+        </div>
+      </div>
+    </div>
+    <div className="hero-image">
+      <div className="robot-illustration">
+        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Robot Body */}
+          <rect x="150" y="180" width="100" height="120" rx="8" fill="url(#grad1)" stroke="#7C3AED" strokeWidth="3"/>
+          {/* Robot Head */}
+          <rect x="160" y="120" width="80" height="70" rx="12" fill="url(#grad2)" stroke="#7C3AED" strokeWidth="3"/>
+          {/* Eyes */}
+          <circle cx="180" cy="145" r="8" fill="#60A5FA"/>
+          <circle cx="220" cy="145" r="8" fill="#60A5FA"/>
+          {/* Antenna */}
+          <line x1="200" y1="120" x2="200" y2="100" stroke="#7C3AED" strokeWidth="3" strokeLinecap="round"/>
+          <circle cx="200" cy="95" r="6" fill="#F59E0B"/>
+          {/* Arms */}
+          <rect x="120" y="200" width="20" height="60" rx="4" fill="url(#grad1)" stroke="#7C3AED" strokeWidth="2"/>
+          <rect x="260" y="200" width="20" height="60" rx="4" fill="url(#grad1)" stroke="#7C3AED" strokeWidth="2"/>
+          {/* Legs */}
+          <rect x="165" y="300" width="25" height="60" rx="4" fill="url(#grad1)" stroke="#7C3AED" strokeWidth="2"/>
+          <rect x="210" y="300" width="25" height="60" rx="4" fill="url(#grad1)" stroke="#7C3AED" strokeWidth="2"/>
+          {/* Gradients */}
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style={{stopColor:'#A78BFA', stopOpacity:0.8}} />
+              <stop offset="100%" style={{stopColor:'#7C3AED', stopOpacity:0.9}} />
+            </linearGradient>
+            <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style={{stopColor:'#C4B5FD', stopOpacity:0.9}} />
+              <stop offset="100%" style={{stopColor:'#8B5CF6', stopOpacity:0.9}} />
+            </linearGradient>
+          </defs>
+          {/* Floating particles */}
+          <circle cx="80" cy="150" r="4" fill="#60A5FA" opacity="0.6">
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-10; 0,0" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="320" cy="200" r="3" fill="#F59E0B" opacity="0.6">
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,10; 0,0" dur="4s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="100" cy="280" r="5" fill="#7C3AED" opacity="0.4">
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="5s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+    </div>
+  </div>
 </div>
 
 :::tip AI-Powered Learning
-This textbook features an integrated RAG chatbot that can answer your questions based on the course content. Look for the chat widget in the bottom-right corner!
+This textbook features an integrated RAG chatbot that can answer your questions based on the course content. Look for the purple chat widget in the bottom-right corner!
 :::
 
 ## What You'll Learn
@@ -27,6 +110,8 @@ This textbook provides a complete journey through the foundations, techniques, a
 - **Perception & Navigation** - Computer vision, SLAM, sensor fusion, and autonomous navigation
 - **Advanced Control** - Motion planning, bipedal locomotion, and manipulation strategies
 - **AI Integration** - Vision-Language-Action pipelines, autonomous agents, and multi-agent systems
+
+<div id="course-structure"></div>
 
 ## Course Structure
 
@@ -131,12 +216,6 @@ Each chapter follows a structured pedagogy:
 **🌐 Urdu Translation (Coming Soon)**
 - Full chapter translations
 - Accessible to Urdu-speaking learners
-
-## Get Started
-
-Ready to begin your journey into Physical AI and Humanoid Robotics?
-
-👉 [Start with Module 1: Foundations of Physical AI & Robotics](/docs/module-1/introduction-to-physical-ai)
 
 ---
 
