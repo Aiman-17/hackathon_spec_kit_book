@@ -136,7 +136,7 @@ Each chapter follows a structured pedagogy:
 
 Ready to begin your journey into Physical AI and Humanoid Robotics?
 
-👉 [Start with Module 1: Foundations of Physical AI & Robotics](module-1/introduction-to-physical-ai)
+👉 [Start with Module 1: Foundations of Physical AI & Robotics](/docs/module-1/introduction-to-physical-ai)
 
 ---
 

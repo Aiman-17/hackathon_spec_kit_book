@@ -63,6 +63,7 @@ const config = {
         logo: {
           alt: 'Robotics Logo',
           src: 'img/logo.svg',
+          href: '/docs/intro',  // Link to intro page instead of homepage
         },
         items: [
           {
