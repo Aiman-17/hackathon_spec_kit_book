@@ -50,6 +50,7 @@ def main():
 if __name__ == '__main__':
     main()
 
+```
 :::tip
 Use meaningful names for your nodes to help with debugging and maintainability. The name should describe the node's primary function.
 :::

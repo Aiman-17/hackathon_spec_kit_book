@@ -73,6 +73,8 @@ Let's start by creating a basic URDF file for a humanoid robot. We'll use the RO
 
 In this example, we've included a separate `humanoid_robot.xacro` file that defines the detailed structure of the humanoid robot, including its limbs, joints, and sensors. The `xacro:humanoid_robot` tag allows us to easily integrate this modular component into the main URDF file.
 
+```
+
 ### Integrating the Humanoid Model into Gazebo
 
 Now that we have a URDF file for our humanoid robot, we can integrate it into the Gazebo simulation environment. Gazebo provides a ROS 2 package called `gazebo_ros` that allows you to easily load and simulate your robot model.

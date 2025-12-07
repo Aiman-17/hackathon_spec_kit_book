@@ -75,6 +75,8 @@ def inverse_kinematics(desired_pose):
     pass
 ```
 
+```
+
 ### Dynamics of Mobile Robots
 
 #### Equations of Motion

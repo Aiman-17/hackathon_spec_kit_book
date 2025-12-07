@@ -76,6 +76,7 @@ class SensorFusionNode(Node):
         self.world_model = self.fuse_sensor_data(sensor_data)
         self.world_model_pub.publish(self.world_model)
 
+```
 :::tip
 Utilize Kalman filters and particle filters to effectively fuse data from multiple sensors and create a robust world model for your humanoid robot.
 :::

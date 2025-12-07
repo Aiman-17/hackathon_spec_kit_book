@@ -82,6 +82,7 @@ def main(args=None):
     rclpy.spin(node)
     rclpy.shutdown()
 
+```
 :::tip
 Use Mermaid diagrams to visualize the high-level architecture of your humanoid robotics system, including the interconnections between the various ROS 2 nodes.
 :::

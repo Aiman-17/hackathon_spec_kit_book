@@ -112,6 +112,8 @@ class GazeboGardenNode(Node):
 
 The code above demonstrates how to interact with Gazebo Classic and Gazebo Garden (Ignition) using ROS 2 Python nodes. The key differences are the service types used (`gazebo_msgs.srv` vs. `ignition_msgs.srv`) and the parameter names (`xml` vs. `sdf`) for the `SpawnEntity` service.
 
+```
+
 ### System Architecture Comparison
 
 To further illustrate the differences between Gazebo Classic and Gazebo Garden (Ignition), let's compare their system architectures using Mermaid diagrams:

@@ -67,6 +67,7 @@ class SensorFusionNode(Node):
         # Publish the fused sensor data to a topic
         self.get_logger().info('Publishing fused sensor data')
         self.publisher_.publish(msg)
+```
 :::
 
 ### Reasoning: Making Intelligent Decisions

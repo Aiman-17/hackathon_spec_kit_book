@@ -87,6 +87,8 @@ Let's consider a simple robotic arm with three links and two revolute joints. He
 
 In this example, we define the `base_link` with its visual and collision properties, as well as the `shoulder_link` and `elbow_link`. The `shoulder_joint` and `elbow_joint` are then specified as revolute joints, connecting the links.
 
+```
+
 ### XACRO: Extending URDF with Parameterization
 
 While URDF provides a robust way to describe robot models, the XML-based syntax can become cumbersome for complex robots. This is where XACRO (XML Macros) comes into play. XACRO is a preprocessor that allows you to create modular, parameterized URDF descriptions, making them easier to maintain and extend.

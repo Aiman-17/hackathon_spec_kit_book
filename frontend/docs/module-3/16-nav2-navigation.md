@@ -87,6 +87,8 @@ def main():
 if __name__ == '__main__':
     main()
 
+```
+
 ### Configuring and Tuning the Nav2 Stack
 
 One of the key advantages of the Nav2 stack is its high degree of configurability, allowing developers to fine-tune the navigation system to their specific needs. This includes adjusting parameters for the global planner, local planner, controller, and other components, as well as integrating custom plugins and behaviors.

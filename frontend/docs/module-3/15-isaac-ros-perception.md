@@ -65,6 +65,7 @@ def main(args=None):
 if __name__ == '__main__':
     main()
 
+```
 :::note
 The Isaac ROS VSLAM package provides a high-level ROS 2 node that abstracts away the complex VSLAM algorithms, allowing you to easily integrate it into your robotic applications.
 :::

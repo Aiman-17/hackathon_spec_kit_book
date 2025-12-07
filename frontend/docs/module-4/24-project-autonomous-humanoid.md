@@ -67,6 +67,7 @@ def spawn_humanoid_robot(node):
     spawn_client.call_async(spawn_request)
 ```
 
+```
 :::tip
 You can use the `gazebo_ros` package to load the world file and spawn the humanoid robot model in the simulation.
 :::

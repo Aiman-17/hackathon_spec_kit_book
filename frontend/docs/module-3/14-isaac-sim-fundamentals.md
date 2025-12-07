@@ -74,6 +74,8 @@ def main(args=None):
 if __name__ == '__main__':
     main()
 
+```
+
 ### 3. Exploring the Isaac Sim Environment
 
 The Isaac Sim provides a comprehensive environment for designing, testing, and validating robotic systems. Let's explore the key components and features of the Isaac Sim.

@@ -109,6 +109,8 @@ graph LR
     E --> B
 ```
 
+```
+
 ## Key Takeaways
 
 - Linear algebra provides the mathematical foundation for representing and transforming robot poses and orientations.

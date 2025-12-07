@@ -130,6 +130,7 @@ The provided code snippet demonstrates a basic ROS 2 node that implements occupa
 
 The `update_occupancy_grid` method is where the core occupancy grid mapping algorithm would be implemented. This would involve processing the laser scan data, updating the corresponding grid cells in the occupancy grid, and maintaining the map's consistency over time.
 
+```
 :::note
 The provided code is a starting point, and you would need to implement the actual occupancy grid mapping algorithm, which can involve techniques such as ray tracing, Bayesian updates, and map smoothing.
 :::

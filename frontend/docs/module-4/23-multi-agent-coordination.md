@@ -76,6 +76,7 @@ graph LR
     C <--> F
     D <--> G
   end
+```
 :::
 
 ## Implementing Multi-Agent Coordination with ROS 2

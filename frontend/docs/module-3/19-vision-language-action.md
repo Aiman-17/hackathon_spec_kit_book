@@ -61,6 +61,7 @@ graph LR
   E --> F[Control Module]
   F --> G[Physical World]
 A high-level architecture of a Vision-Language-Action (VLA) pipeline.
+```
 :::
 
 ### Implementing a VLA Pipeline in ROS 2

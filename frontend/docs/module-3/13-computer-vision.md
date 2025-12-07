@@ -113,6 +113,7 @@ if __name__ == '__main__':
 
 In this example, we create a ROS 2 node that subscribes to the `camera/image_raw` topic, performs object detection using a pre-trained Faster R-CNN model, and publishes the detected objects with their bounding boxes, labels, and confidence scores.
 
+```
 :::tip
 To integrate computer vision into your robotic system, you can leverage existing deep learning models or train custom models using frameworks like PyTorch or TensorFlow.
 :::

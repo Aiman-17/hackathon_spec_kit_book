@@ -75,6 +75,8 @@ def trajectory_optimization(initial_state, goal_state, robot_model):
     
     return result.x
 
+```
+
 ### 4. Integrating Perception, Planning, and Control
 
 - Sensor fusion for robust perception of the environment

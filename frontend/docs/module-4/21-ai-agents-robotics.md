@@ -114,6 +114,7 @@ if __name__ == '__main__':
     main()
 
 In this example, the `BDIAgent` class represents an AI agent that uses the BDI model to control a mobile robot. The agent has beliefs about its environment (obstacles and robot pose), desires (reaching a goal pose), and intentions (the current plan to reach the goal). The agent continuously updates its beliefs, plans a path, and executes the plan to navigate towards the goal.
+```
 :::
 
 ### Integrating AI Agents with Robotic Platforms

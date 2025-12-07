@@ -110,6 +110,8 @@ if __name__ == '__main__':
 
 This example demonstrates a basic ROS 2 node that simulates the joint state and pose/twist of a humanoid robot. In a real-world application, you would need to implement the `update_joint_positions()` method to update the joint positions based on your control algorithms and the robot's kinematics and dynamics.
 
+```
+
 ### Control Architectures in Humanoid Robotics
 
 Humanoid robots often employ complex control architectures to coordinate the various subsystems and ensure stable, efficient, and human-like movement. Two common approaches include:
@@ -137,6 +139,8 @@ graph TB
 ```
 
 The choice of control architecture depends on factors such as the complexity of the robot, the required level of autonomy, and the desired balance between centralized decision-making and distributed control.
+
+```
 
 ### Real-World Applications of Humanoid Robotics
 
@@ -182,4 +186,4 @@ As humanoid robotics continues to advance, it is important to consider the ethic
 4. Evaluate the real-world applications and societal impact of advanced humanoid robots, including potential ethical considerations.
 5. Create a high-level system diagram for a humanoid robot platform, including key subsystems and interfaces.
 
-```
+``````
