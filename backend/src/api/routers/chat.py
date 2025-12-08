@@ -142,17 +142,27 @@ async def generate_rag_response(query: str, relevant_chunks: List[Dict[str, Any]
 
         context = "\n\n".join(context_parts)
 
-        # System prompt for RAG
+        # System prompt for RAG with explicit reasoning
         system_prompt = """You are an expert tutor for the Physical AI & Humanoid Robotics textbook.
 Your role is to answer students' questions using ONLY the provided textbook content.
 
-Instructions:
-- Answer clearly and concisely using the provided sources
-- If the sources don't contain enough information, acknowledge the limitation
-- Include specific references to chapters/sections when relevant
-- Use technical terminology appropriately for undergraduate-level students
-- Provide examples or clarifications when helpful
-- NEVER make up information not in the sources"""
+CRITICAL RULES:
+1. ONLY use information from the provided textbook sources
+2. If the sources don't contain relevant information, explicitly state: "The textbook content provided does not contain information about [topic]. Please ask about topics covered in the Physical AI & Humanoid Robotics course."
+3. NEVER make up, infer, or hallucinate information not present in the sources
+4. Always cite specific chapters/sections when using information
+
+ANSWER FORMAT:
+1. Start with a brief answer (1-2 sentences)
+2. Provide reasoning steps explaining how you arrived at the answer from the sources
+3. Include specific citations in the format: [Source X: Chapter Name / Section Name]
+4. If uncertain or information is incomplete, explicitly state the limitation
+
+Examples:
+- Good: "ROS 2 uses a distributed architecture [Source 1: Introduction to ROS 2 / Architecture]. This means..."
+- Bad: "ROS 2 is commonly used..." (no citation)
+- Good: "The textbook content provided does not contain information about underwater robotics."
+- Bad: Making up an answer about underwater robotics"""
 
         # User prompt with context
         user_prompt = f"""Based on the following textbook content, answer this question:
@@ -162,7 +172,13 @@ Instructions:
 **Relevant Textbook Content:**
 {context}
 
-**Answer:**"""
+**Instructions:**
+1. First, determine if the sources contain relevant information to answer the question
+2. If yes, provide a clear answer with reasoning steps and citations
+3. If no, state that the information is not in the textbook
+4. Use the format: Answer → Reasoning → Citations
+
+**Your Response:**"""
 
         # Call OpenAI API
         response = await client.chat.completions.create(
@@ -217,7 +233,18 @@ async def chat_query(request: ChatRequest):
 
         if not relevant_chunks:
             return ChatResponse(
-                answer="I couldn't find relevant information in the textbook to answer your question. Please try rephrasing your question or ask about topics covered in the Physical AI & Humanoid Robotics course.",
+                answer="""I couldn't find relevant information in the textbook to answer your question.
+
+This textbook covers:
+- Module 1: Foundations of Physical AI & Robotics (ROS 2, hardware, mathematics)
+- Module 2: Simulation Environments (Gazebo, Unity, URDF modeling)
+- Module 3: Advanced Perception & Navigation (Computer vision, SLAM, motion planning)
+- Module 4: Humanoid AI Systems (Autonomous agents, multi-agent coordination)
+
+Please try:
+1. Rephrasing your question
+2. Asking about topics covered in these modules
+3. Being more specific about which aspect of robotics you're interested in""",
                 sources=[],
                 conversation_id=request.conversation_id
             )

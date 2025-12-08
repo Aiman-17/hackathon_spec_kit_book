@@ -7,8 +7,8 @@ const darkCodeTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Physical AI & Humanoid Robotics',
-  tagline: 'AI-Native Textbook for the Future of Robotics',
+  title: 'Physical AI & Humanoid Robotics Textbook',
+  tagline: 'Master Intelligent Robotic Systems with AI-Powered Learning',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -63,7 +63,7 @@ const config = {
         logo: {
           alt: 'Robotics Logo',
           src: 'https://t4.ftcdn.net/jpg/05/64/01/55/360_F_564015595_9IqM3dj9un7b8sf7QZ5bw83UcYShaLCC.jpg',
-          href: 'docs/intro',  // Link to intro page instead of homepage
+          href: '/',  // Link to homepage
         },
         items: [
           {
