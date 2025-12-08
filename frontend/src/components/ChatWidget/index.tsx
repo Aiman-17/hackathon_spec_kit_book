@@ -25,15 +25,20 @@ interface SourceCitation {
   similarity_score: number;
 }
 
-// Backend API URL - update this for your deployment
+// ============================================
+// CONFIGURATION: Update HF_BACKEND_URL after deploying to Hugging Face
+// ============================================
+const HF_BACKEND_URL = 'https://your-username-ai-robotics-rag.hf.space';  // TODO: Replace with your HF Space URL
+
+// Backend API URL - automatically uses HF in production, localhost in development
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ||
   (process.env.NODE_ENV === 'production'
-    ? 'https://your-username-ai-robotics-rag.hf.space'  // Update with your HF Space URL
+    ? HF_BACKEND_URL
     : 'http://localhost:8000');
 
-// Check if running in production without backend
+// Check if running in production without backend configured
 const IS_PRODUCTION_WITHOUT_BACKEND = process.env.NODE_ENV === 'production' &&
-  (API_BASE_URL === 'https://your-backend-url.com' || API_BASE_URL === 'https://your-username-ai-robotics-rag.hf.space');
+  HF_BACKEND_URL.includes('your-username');
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
