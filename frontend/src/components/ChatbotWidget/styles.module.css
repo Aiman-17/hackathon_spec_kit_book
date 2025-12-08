@@ -1,0 +1,331 @@
+.chatbotContainer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+.chatToggle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatToggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
+
+.chatToggleOpen {
+  background: #dc2626;
+}
+
+.chatWindow {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  width: 380px;
+  height: 550px;
+  background: var(--ifm-background-color, white);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chatHeader {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.botIcon {
+  font-size: 32px;
+}
+
+.botName {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.botStatus {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--ifm-background-color, white);
+}
+
+.messagesContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messagesContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messagesContainer::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.message {
+  max-width: 85%;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.userMessage {
+  align-self: flex-end;
+}
+
+.assistantMessage {
+  align-self: flex-start;
+}
+
+.messageContent {
+  padding: 12px 16px;
+  border-radius: 12px;
+  line-height: 1.5;
+  font-size: 14px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.userMessage .messageContent {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.assistantMessage .messageContent {
+  background: var(--ifm-color-emphasis-100, #f3f4f6);
+  color: var(--ifm-font-color-base, #1f2937);
+  border-bottom-left-radius: 4px;
+}
+
+.sources {
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--ifm-color-emphasis-100, #f9fafb);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.sourcesTitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--ifm-font-color-base, #374151);
+}
+
+.sourceItem {
+  padding: 6px 0;
+  border-top: 1px solid var(--ifm-color-emphasis-200, #e5e7eb);
+  color: var(--ifm-font-color-base, #4b5563);
+}
+
+.sourceItem:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.similarityScore {
+  font-size: 11px;
+  color: var(--ifm-color-emphasis-600, #6b7280);
+  margin-top: 2px;
+}
+
+.loadingDots {
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+  background: var(--ifm-color-emphasis-100, #f3f4f6);
+  border-radius: 12px;
+  border-bottom-left-radius: 4px;
+}
+
+.loadingDots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ifm-color-emphasis-600, #6b7280);
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.loadingDots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loadingDots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.inputContainer {
+  padding: 16px;
+  border-top: 1px solid var(--ifm-color-emphasis-200, #e5e7eb);
+  display: flex;
+  gap: 8px;
+  background: var(--ifm-background-color, white);
+}
+
+.input {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid var(--ifm-color-emphasis-200, #e5e7eb);
+  border-radius: 8px;
+  font-size: 14px;
+  resize: none;
+  font-family: inherit;
+  background: var(--ifm-background-color, white);
+  color: var(--ifm-font-color-base, #1f2937);
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sendButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sendButton:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.sendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .chatWindow {
+    width: calc(100vw - 40px);
+    height: calc(100vh - 140px);
+    max-height: 550px;
+  }
+
+  .chatbotContainer {
+    right: 10px;
+    bottom: 10px;
+  }
+}
+
+/* Dark mode support */
+html[data-theme='dark'] .messageContent {
+  color: inherit;
+}
+
+html[data-theme='dark'] .assistantMessage .messageContent {
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-font-color-base);
+}
+
+html[data-theme='dark'] .sources {
+  background: var(--ifm-color-emphasis-200);
+}
+
+html[data-theme='dark'] .input {
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  border-color: var(--ifm-color-emphasis-300);
+}
