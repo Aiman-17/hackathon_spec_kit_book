@@ -26,13 +26,14 @@ interface SourceCitation {
 }
 
 // Backend API URL - update this for your deployment
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://your-backend-url.com'  // TODO: Replace with actual production URL
-  : 'http://localhost:8000';
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ||
+  (process.env.NODE_ENV === 'production'
+    ? 'https://your-username-ai-robotics-rag.hf.space'  // Update with your HF Space URL
+    : 'http://localhost:8000');
 
 // Check if running in production without backend
 const IS_PRODUCTION_WITHOUT_BACKEND = process.env.NODE_ENV === 'production' &&
-  API_BASE_URL === 'https://your-backend-url.com';
+  (API_BASE_URL === 'https://your-backend-url.com' || API_BASE_URL === 'https://your-username-ai-robotics-rag.hf.space');
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
