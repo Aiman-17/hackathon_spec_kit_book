@@ -1,377 +1,120 @@
-# Physical AI & Humanoid Robotics Textbook
+---
+title: Physical AI Robotics RAG API
+emoji: 🤖
+colorFrom: purple
+colorTo: blue
+sdk: docker
+pinned: false
+license: mit
+---
 
-An AI-native, interactive textbook for learning Physical AI and Humanoid Robotics. Built with Docusaurus, featuring an integrated RAG chatbot, personalization, and multilingual support.
+# Physical AI & Humanoid Robotics - RAG Backend API
 
-## Live Demo
+This is the backend API for the [Physical AI & Humanoid Robotics Textbook](https://aiman-17.github.io/hackathon_spec_kit_book/), providing RAG (Retrieval-Augmented Generation) capabilities powered by:
 
-Visit the deployed textbook: [https://Aiman-17.github.io/hackathon_spec_kit_book/](https://Aiman-17.github.io/hackathon_spec_kit_book/)
+- **FastAPI** - High-performance API framework
+- **Qdrant** - Vector database for semantic search
+- **OpenAI** - Embeddings and chat completion
+- **PostgreSQL** - User data and chat history
 
 ## Features
 
-- **24 Comprehensive Chapters** across 4 modules covering Physical AI fundamentals to advanced humanoid systems
-- **AI-Powered RAG Chatbot** - Ask questions about any concept with context-aware responses
-- **Interactive Learning** - Hands-on code examples, exercises, and visualizations
-- **Modern UI** - Beautiful, responsive design with dark mode support
-- **Clean URLs** - SEO-friendly slugs without number prefixes
-- **Personalization** (Coming Soon) - Content adapted to your skill level
-- **Urdu Translation** (Coming Soon) - Accessible to Urdu-speaking learners
+- 🤖 **RAG Chat API** - Answer questions using textbook content
+- 📚 **Source Citations** - Every answer includes relevant chapter references
+- 🎯 **Context-Aware** - Supports selected text for precise answers
+- 🔍 **Semantic Search** - Find relevant content using embeddings
+- ⚡ **Fast & Scalable** - Async Python with connection pooling
 
-## Course Structure
+## API Endpoints
 
-### Module 1: Foundations of Physical AI & Robotics
-- Introduction to Physical AI
-- Robot Hardware: Sensors, Actuators, Control Systems
-- Mathematics for Robotics (Kinematics & Dynamics)
-- Introduction to Robot Operating System (ROS 2)
-- Linear Algebra & Calculus for Robot Motion
-
-### Module 2: Simulation Environments & Robotics Software
-- ROS 2 in Depth: Nodes, Topics, Services, Actions
-- Building Robot Applications with ROS Packages
-- URDF & XACRO for Robot Modeling
-- Gazebo Classic vs. Gazebo Garden
-- Building a Humanoid Model in Gazebo
-- Unity for Robotics Visualization & HRI
-
-### Module 3: Advanced Perception, Navigation & Control
-- Computer Vision for Robotics
-- NVIDIA Isaac Sim: Setup & Fundamentals
-- Isaac ROS Perception Pipelines
-- Nav2 Navigation Stack
-- Mapping & Localization
-- Motion Planning for Humanoids
-- Vision-Language-Action Pipelines
-
-### Module 4: Humanoid AI Systems & Capstone
-- Integrating Perception, Action & Control
-- AI Agents for Autonomous Robotics
-- End-to-End Humanoid Pipeline
-- Multi-Agent Coordination
-- Project: Build an Autonomous Humanoid Simulation
-- Final Capstone: Full Humanoid Robotics System
-
-## Prerequisites
-
-### Required Software
-- **Node.js** v18.0 or higher
-- **npm** v9.0 or higher (comes with Node.js)
-- **Python** 3.9 or higher (for backend services)
-- **Git** for version control
-
-### Optional (for backend/chatbot features)
-- **PostgreSQL** 14 or higher
-- **Qdrant** vector database (can run in Docker)
-- **OpenAI API Key** (for embeddings and chat)
-
-## Installation
-
-### 1. Clone the Repository
-
+### Health Check
 ```bash
-git clone https://github.com/Aiman-17/hackathon_spec_kit_book.git
-cd hackathon_spec_kit_book
+GET /health
 ```
 
-### 2. Install Frontend Dependencies
-
+### Chat Query
 ```bash
-cd frontend
-npm install
+POST /api/chat/query
+Content-Type: application/json
+
+{
+  "query": "What is ROS 2?",
+  "max_results": 3,
+  "include_sources": true
+}
 ```
 
-### 3. Install Backend Dependencies (Optional)
-
-```bash
-cd ../backend
-pip install -r requirements.txt
+Response:
+```json
+{
+  "answer": "ROS 2 (Robot Operating System 2) is...",
+  "sources": [
+    {
+      "chapter": "Introduction to ROS 2",
+      "section": "Architecture",
+      "module": "Module 1",
+      "content_snippet": "...",
+      "similarity_score": 0.85
+    }
+  ],
+  "timestamp": "2025-12-07T..."
+}
 ```
 
-### 4. Configure Environment Variables (Optional)
+## Environment Variables
 
-If you want to run the RAG chatbot locally:
-
-```bash
-cd backend
-cp .env.example .env
-# Edit .env and add your API keys
-```
-
-Required environment variables:
-```env
-OPENAI_API_KEY=your_openai_api_key_here
-QDRANT_HOST=localhost
-QDRANT_PORT=6333
-DATABASE_URL=postgresql://user:password@localhost:5432/textbook_db
-```
-
-## Build Instructions
-
-### Development Mode
-
-Run the development server with hot reload:
+Required secrets (configure in Hugging Face Space settings):
 
 ```bash
-cd frontend
-npm start
-```
+# OpenAI
+OPENAI_API_KEY=your_openai_key
 
-The site will be available at `http://localhost:3000`
+# Qdrant Vector Database
+QDRANT_URL=https://your-cluster.qdrant.io
+QDRANT_API_KEY=your_qdrant_key
 
-### Production Build
+# PostgreSQL Database
+NEON_DB_URL=postgresql://user:pass@host/db
 
-Build the static site for production:
+# Authentication
+BETTER_AUTH_SECRET=your_32_char_secret_key_here
+JWT_SECRET_KEY=your_jwt_secret
 
-```bash
-cd frontend
-npm run build
-```
-
-The production-ready files will be generated in the `frontend/build` directory.
-
-### Test Production Build Locally
-
-Serve the production build locally to test:
-
-```bash
-cd frontend
-npm run serve
-```
-
-### Build with Clean Cache
-
-If you encounter build issues, clean the cache first:
-
-```bash
-cd frontend
-rm -rf build .docusaurus node_modules/.cache
-npm run build
+# Application
+ENVIRONMENT=production
+CORS_ORIGINS=https://aiman-17.github.io
 ```
 
 ## Deployment
 
-### Deploy to GitHub Pages
+This Space is automatically deployed from the GitHub repository. To deploy:
 
-The project is configured to deploy to GitHub Pages automatically:
+1. Create a new Hugging Face Space
+2. Select "Docker" as the SDK
+3. Connect your GitHub repository
+4. Configure the secrets in Space settings
+5. The Space will auto-deploy on push
+
+## Local Development
 
 ```bash
-cd frontend
-GIT_USER=<your-github-username> npm run deploy
+# Install dependencies
+pip install -r requirements-hf.txt
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your keys
+
+# Run the server
+python app.py
 ```
 
-This will:
-1. Build the production site
-2. Push to the `gh-pages` branch
-3. GitHub Pages will automatically deploy from that branch
+## Documentation
 
-### Manual Deployment
-
-You can also deploy to any static hosting service:
-
-1. Build the site: `npm run build`
-2. Upload the `frontend/build` directory to your hosting provider
-
-Supported platforms:
-- GitHub Pages (configured)
-- Vercel
-- Netlify
-- AWS S3 + CloudFront
-- Azure Static Web Apps
-
-## Project Structure
-
-```
-hackathon_spec_kit_book/
-├── frontend/                 # Docusaurus frontend
-│   ├── docs/                # Markdown content
-│   │   ├── intro.md        # Landing page
-│   │   ├── module-1/       # Module 1 chapters
-│   │   ├── module-2/       # Module 2 chapters
-│   │   ├── module-3/       # Module 3 chapters
-│   │   └── module-4/       # Module 4 chapters
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   └── theme/          # Custom theme files
-│   ├── docusaurus.config.js # Docusaurus configuration
-│   ├── sidebars.js         # Sidebar navigation
-│   └── package.json        # Frontend dependencies
-├── backend/                 # FastAPI backend (optional)
-│   ├── src/
-│   │   ├── api/           # API routes
-│   │   ├── services/      # Business logic
-│   │   └── models/        # Data models
-│   ├── scripts/           # Utility scripts
-│   └── requirements.txt   # Python dependencies
-├── scripts/                # Build and utility scripts
-│   ├── generate-chapters.py
-│   └── validate-content.py
-├── add_slugs.py           # Script to add custom URL slugs
-└── README.md              # This file
-```
-
-## Development Workflow
-
-### Adding New Chapters
-
-1. Create a new markdown file in the appropriate module directory:
-   ```bash
-   # Example: Adding a new chapter to Module 1
-   cd frontend/docs/module-1
-   touch 07-new-chapter.md
-   ```
-
-2. Add frontmatter to the file:
-   ```markdown
-   ---
-   title: Your Chapter Title
-   slug: your-chapter-slug
-   sidebar_position: 7
-   description: "Brief description"
-   tags: [tag1, tag2]
-   ---
-
-   # Your Chapter Title
-
-   Your content here...
-   ```
-
-3. Update `frontend/sidebars.js` to include the new chapter:
-   ```javascript
-   {
-     type: 'category',
-     label: 'Module 1: Foundations',
-     items: [
-       'module-1/introduction-to-physical-ai',
-       // ... other chapters
-       'module-1/your-chapter-slug',  // Add this line
-     ],
-   }
-   ```
-
-### Running Backend Services (Optional)
-
-1. Start Qdrant (using Docker):
-   ```bash
-   docker run -p 6333:6333 qdrant/qdrant
-   ```
-
-2. Start PostgreSQL (or use existing instance)
-
-3. Run the FastAPI backend:
-   ```bash
-   cd backend
-   python -m src.main
-   ```
-
-4. Ingest chapters into the vector database:
-   ```bash
-   cd backend
-   python scripts/ingest_all_chapters.py
-   ```
-
-## Customization
-
-### Changing Theme Colors
-
-Edit `frontend/src/theme/custom.css`:
-
-```css
-:root {
-  --ifm-color-primary: #7C3AED;  /* Change primary color */
-  --ifm-navbar-background-color: #1a1a1a;
-  /* Add more custom styles */
-}
-```
-
-### Modifying Navigation
-
-Edit `frontend/docusaurus.config.js`:
-
-```javascript
-navbar: {
-  title: 'Your Custom Title',
-  items: [
-    // Add custom navbar items
-  ],
-}
-```
-
-### Adding Custom Components
-
-Create React components in `frontend/src/components/` and import them in your markdown files.
-
-## Troubleshooting
-
-### Build Errors
-
-**Problem**: Module not found errors
-```bash
-# Solution: Clean install
-rm -rf node_modules package-lock.json
-npm install
-```
-
-**Problem**: Broken links warning
-```bash
-# Solution: Check that all internal links use correct slugs
-# Run build to see which links are broken
-npm run build
-```
-
-### Deployment Issues
-
-**Problem**: gh-pages branch doesn't exist
-```bash
-# Solution: Create the branch first
-git checkout --orphan gh-pages
-git rm -rf .
-git commit --allow-empty -m "Initial gh-pages commit"
-git push origin gh-pages
-git checkout main
-```
-
-**Problem**: 404 on GitHub Pages
-- Check that `baseUrl` in `docusaurus.config.js` matches your repository name
-- Ensure GitHub Pages is enabled in repository settings
-
-## Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Make your changes
-4. Test locally: `npm run build`
-5. Commit your changes: `git commit -m "Add your feature"`
-6. Push to your fork: `git push origin feature/your-feature`
-7. Create a Pull Request
-
-## Technology Stack
-
-- **Frontend**: Docusaurus 3.x, React 18
-- **Backend**: FastAPI, Python 3.9+
-- **Database**: PostgreSQL 14+
-- **Vector DB**: Qdrant
-- **AI**: OpenAI GPT-4, OpenAI Embeddings
-- **Deployment**: GitHub Pages
-- **Build Tool**: npm, Webpack
+- **API Docs**: `/api/docs` (Swagger UI)
+- **ReDoc**: `/api/redoc` (Alternative docs)
+- **Textbook Site**: https://aiman-17.github.io/hackathon_spec_kit_book/
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Built with Docusaurus by Meta
-- AI-powered content generation using OpenAI GPT-4
-- Vector search powered by Qdrant
-- Inspired by modern educational platforms and AI-native learning
-
-## Contact
-
-For questions or support:
-- GitHub Issues: [Create an issue](https://github.com/Aiman-17/hackathon_spec_kit_book/issues)
-- Repository: [github.com/Aiman-17/hackathon_spec_kit_book](https://github.com/Aiman-17/hackathon_spec_kit_book)
-
----
-
-Built with love for the robotics and AI community
+MIT License - See LICENSE file for details
