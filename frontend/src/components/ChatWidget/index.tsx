@@ -30,12 +30,18 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://your-backend-url.com'  // TODO: Replace with actual production URL
   : 'http://localhost:8000';
 
+// Check if running in production without backend
+const IS_PRODUCTION_WITHOUT_BACKEND = process.env.NODE_ENV === 'production' &&
+  API_BASE_URL === 'https://your-backend-url.com';
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Hi! I\'m your AI tutor for Physical AI & Humanoid Robotics. Ask me anything about the textbook content!',
+      content: IS_PRODUCTION_WITHOUT_BACKEND
+        ? 'Hi! The RAG chatbot feature is currently only available when running locally. To use this feature:\n\n1. Clone the repository\n2. Set up the backend (see README.md)\n3. Run locally with `npm start`\n\nFor now, you can explore the textbook content using the navigation menu!'
+        : 'Hi! I\'m your AI tutor for Physical AI & Humanoid Robotics. Ask me anything about the textbook content!',
     }
   ]);
   const [input, setInput] = useState('');
@@ -57,6 +63,16 @@ export default function ChatWidget() {
   }, [isOpen]);
 
   const sendMessage = async () => {
+    // Prevent sending in production without backend
+    if (IS_PRODUCTION_WITHOUT_BACKEND) {
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: 'The chatbot is currently unavailable on the deployed site. Please run the project locally to use this feature. See the README for setup instructions.',
+      }]);
+      setInput('');
+      return;
+    }
+
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -207,7 +223,9 @@ export default function ChatWidget() {
               ref={inputRef}
               type="text"
               className="chat-input"
-              placeholder="Ask a question about the textbook..."
+              placeholder={IS_PRODUCTION_WITHOUT_BACKEND
+                ? "Chatbot unavailable - run locally to use"
+                : "Ask a question about the textbook..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
