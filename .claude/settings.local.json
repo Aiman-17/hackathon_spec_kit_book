@@ -22,7 +22,12 @@
       "Bash(done)",
       "Bash(do echo \"=== Generating Module 2, Chapter $i ===\")",
       "Bash(npm run build:*)",
-      "Bash(timeout 10 python:*)"
+      "Bash(timeout 10 python:*)",
+      "Bash(git push:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git checkout:*)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []
