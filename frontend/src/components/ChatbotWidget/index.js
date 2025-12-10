@@ -18,7 +18,7 @@ const ChatbotWidget = () => {
   // Backend API URL - defaults to Hugging Face Space in production
   const API_URL = process.env.REACT_APP_BACKEND_URL ||
                   (typeof window !== 'undefined' && window.location.hostname.includes('github.io')
-                    ? 'https://your-username-ai-robotics-rag.hf.space'  // Update this after creating HF Space
+                    ? 'https://huggingface.co/spaces/mksjai/ai-robotics-rag-backend'  // Update this after creating HF Space
                     : 'http://localhost:8000');
 
   const scrollToBottom = () => {
