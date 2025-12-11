@@ -36,7 +36,7 @@ function HomepageHeader() {
                 <div className={styles.statLabel}>Modules</div>
               </div>
               <div className={styles.statItem}>
-                <div className={styles.statNumber}>24</div>
+                <div className={styles.statNumber}>25</div>
                 <div className={styles.statLabel}>Chapters</div>
               </div>
               <div className={styles.statItem}>
@@ -103,7 +103,7 @@ function HomepageFeatures() {
             <h3>📘 Comprehensive Curriculum</h3>
             <p>
               4 modules covering everything from ROS 2 fundamentals to advanced AI integration,
-              with 24 detailed chapters and hands-on exercises.
+              with 25 detailed chapters and hands-on exercises.
             </p>
           </div>
           <div className={styles.feature}>

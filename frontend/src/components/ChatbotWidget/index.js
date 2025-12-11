@@ -15,8 +15,11 @@ const ChatbotWidget = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Backend API URL - in production, this will be the deployed backend
-  const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+  // Backend API URL - defaults to Hugging Face Space in production
+  const API_URL = process.env.REACT_APP_BACKEND_URL ||
+                  (typeof window !== 'undefined' && window.location.hostname.includes('github.io')
+                    ? 'https://huggingface.co/spaces/mksjai/ai-robotics-rag-backend'  // Update this after creating HF Space
+                    : 'http://localhost:8000');
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
