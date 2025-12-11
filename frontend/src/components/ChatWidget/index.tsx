@@ -28,7 +28,8 @@ interface SourceCitation {
 // ============================================
 // CONFIGURATION: Hugging Face Backend URL
 // ============================================
-const HF_BACKEND_URL = "https://huggingface.co/spaces/mksjai/ai-robotics-rag-backend";
+// HF Spaces API URL format: https://{username}-{space-name}.hf.space
+const HF_BACKEND_URL = "https://mksjai-ai-robotics-rag-backend.hf.space";
 
 // Backend API URL - automatically uses HF in production, localhost in development
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ||
@@ -36,18 +37,15 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ||
     ? HF_BACKEND_URL
     : 'http://localhost:8000');
 
-// Check if running in production without backend configured
-const IS_PRODUCTION_WITHOUT_BACKEND = process.env.NODE_ENV === 'production' &&
-  HF_BACKEND_URL.includes('mksjai');
+// Check if backend is deployed (Space should be running)
+const IS_PRODUCTION_WITHOUT_BACKEND = false; // Backend is now deployed!
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: IS_PRODUCTION_WITHOUT_BACKEND
-        ? 'Hi! The RAG chatbot feature is currently only available when running locally. To use this feature:\n\n1. Clone the repository\n2. Set up the backend (see README.md)\n3. Run locally with `npm start`\n\nFor now, you can explore the textbook content using the navigation menu!'
-        : 'Hi! I\'m your AI tutor for Physical AI & Humanoid Robotics. Ask me anything about the textbook content!',
+      content: 'Hi! I\'m your AI tutor for Physical AI & Humanoid Robotics. Ask me anything about the textbook content!',
     }
   ]);
   const [input, setInput] = useState('');

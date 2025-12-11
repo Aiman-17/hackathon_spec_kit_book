@@ -41,7 +41,7 @@ cd C:\Users\ACS\OneDrive\Desktop\ai-robotics-rag-backend
 git status  # Check if already initialized
 
 # Add HF Space as remote
-git remote add hf https://huggingface.co/spaces/YOUR-USERNAME/ai-robotics-rag
+git remote add hf https://huggingface.co/spaces/mksjai/ai-robotics-rag-backend
 git branch -M main
 
 # Push to HF

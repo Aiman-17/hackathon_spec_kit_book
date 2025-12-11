@@ -229,12 +229,13 @@ async def get_config() -> Dict[str, Any]:
 # ==========================================
 
 # Import routers
-from src.api.routers import ingestion, chat, personalization
+from src.api.routers import ingestion, chat, personalization, translate
 
 # Include routers
 app.include_router(ingestion.router)
 app.include_router(chat.router)
 app.include_router(personalization.router)  # Phase 4: Personalization & Translation
+app.include_router(translate.router)  # Phase 5: Urdu Translation
 
 # TODO: Phase 5 - Agent intelligence endpoints (/api/agent)
 
