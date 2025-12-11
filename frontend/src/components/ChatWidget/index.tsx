@@ -37,9 +37,6 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ||
     ? HF_BACKEND_URL
     : 'http://localhost:8000');
 
-// Check if backend is deployed (Space should be running)
-const IS_PRODUCTION_WITHOUT_BACKEND = false; // Backend is now deployed!
-
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -67,16 +64,6 @@ export default function ChatWidget() {
   }, [isOpen]);
 
   const sendMessage = async () => {
-    // Prevent sending in production without backend
-    if (IS_PRODUCTION_WITHOUT_BACKEND) {
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: 'The chatbot is currently unavailable on the deployed site. Please run the project locally to use this feature. See the README for setup instructions.',
-      }]);
-      setInput('');
-      return;
-    }
-
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -227,9 +214,7 @@ export default function ChatWidget() {
               ref={inputRef}
               type="text"
               className="chat-input"
-              placeholder={IS_PRODUCTION_WITHOUT_BACKEND
-                ? "Chatbot unavailable - run locally to use"
-                : "Ask a question about the textbook..."}
+              placeholder="Ask a question about the textbook..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
