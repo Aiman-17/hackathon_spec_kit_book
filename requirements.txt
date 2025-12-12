@@ -14,7 +14,7 @@ qdrant-client==1.11.3
 tiktoken==0.5.2
 
 # Data Validation & Settings
-pydantic[email]==2.5.3
+pydantic==2.5.3
 pydantic-settings==2.1.0
 python-dotenv==1.0.0
 

@@ -25,23 +25,24 @@ interface SourceCitation {
   similarity_score: number;
 }
 
-// Backend API URL - update this for your deployment
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://your-backend-url.com'  // TODO: Replace with actual production URL
-  : 'http://localhost:8000';
+// ============================================
+// CONFIGURATION: Hugging Face Backend URL
+// ============================================
+// HF Spaces API URL format: https://{username}-{space-name}.hf.space
+const HF_BACKEND_URL = "https://mksjai-ai-robotics-rag-backend.hf.space";
 
-// Check if running in production without backend
-const IS_PRODUCTION_WITHOUT_BACKEND = process.env.NODE_ENV === 'production' &&
-  API_BASE_URL === 'https://your-backend-url.com';
+// Backend API URL - automatically uses HF in production, localhost in development
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ||
+  (process.env.NODE_ENV === 'production'
+    ? HF_BACKEND_URL
+    : 'http://localhost:8000');
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: IS_PRODUCTION_WITHOUT_BACKEND
-        ? 'Hi! The RAG chatbot feature is currently only available when running locally. To use this feature:\n\n1. Clone the repository\n2. Set up the backend (see README.md)\n3. Run locally with `npm start`\n\nFor now, you can explore the textbook content using the navigation menu!'
-        : 'Hi! I\'m your AI tutor for Physical AI & Humanoid Robotics. Ask me anything about the textbook content!',
+      content: 'Hi! I\'m your AI tutor for Physical AI & Humanoid Robotics. Ask me anything about the textbook content!',
     }
   ]);
   const [input, setInput] = useState('');
@@ -63,16 +64,6 @@ export default function ChatWidget() {
   }, [isOpen]);
 
   const sendMessage = async () => {
-    // Prevent sending in production without backend
-    if (IS_PRODUCTION_WITHOUT_BACKEND) {
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: 'The chatbot is currently unavailable on the deployed site. Please run the project locally to use this feature. See the README for setup instructions.',
-      }]);
-      setInput('');
-      return;
-    }
-
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -223,9 +214,7 @@ export default function ChatWidget() {
               ref={inputRef}
               type="text"
               className="chat-input"
-              placeholder={IS_PRODUCTION_WITHOUT_BACKEND
-                ? "Chatbot unavailable - run locally to use"
-                : "Ask a question about the textbook..."}
+              placeholder="Ask a question about the textbook..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
