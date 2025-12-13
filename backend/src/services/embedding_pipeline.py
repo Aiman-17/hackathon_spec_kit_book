@@ -3,6 +3,8 @@ Embedding Pipeline Service
 
 Generates embeddings using OpenAI text-embedding-3-small model.
 Handles batching, rate limiting, and caching for optimal performance.
+
+Note: Uses OpenRouter API - dimensions parameter not supported.
 """
 
 import asyncio
