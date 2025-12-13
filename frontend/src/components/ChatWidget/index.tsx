@@ -31,11 +31,10 @@ interface SourceCitation {
 // HF Spaces API URL format: https://{username}-{space-name}.hf.space
 const HF_BACKEND_URL = "https://mksjai-ai-robotics-rag-backend.hf.space";
 
-// Backend API URL - automatically uses HF in production, localhost in development
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL ||
-  (process.env.NODE_ENV === 'production'
-    ? HF_BACKEND_URL
-    : 'http://localhost:8000');
+// Backend API URL - Check if we're in production (GitHub Pages) or local development
+// In production, the URL will contain github.io
+const isProduction = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+const API_BASE_URL = isProduction ? HF_BACKEND_URL : 'http://localhost:8000';
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);

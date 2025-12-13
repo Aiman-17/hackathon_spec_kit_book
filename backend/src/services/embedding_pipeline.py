@@ -58,8 +58,7 @@ class EmbeddingPipeline:
         try:
             response = await self.client.embeddings.create(
                 model=self.MODEL,
-                input=text,
-                dimensions=self.EMBEDDING_SIZE
+                input=text
             )
 
             embedding = response.data[0].embedding
@@ -106,8 +105,7 @@ class EmbeddingPipeline:
             try:
                 response = await self.client.embeddings.create(
                     model=self.MODEL,
-                    input=batch,
-                    dimensions=self.EMBEDDING_SIZE
+                    input=batch
                 )
 
                 # Extract embeddings in order
