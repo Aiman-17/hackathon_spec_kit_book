@@ -19,11 +19,15 @@ This is the backend API for the [Physical AI & Humanoid Robotics Textbook](https
 
 ## Features
 
-- 🤖 **RAG Chat API** - Answer questions using textbook content
+- 🤖 **RAG Chat API** - Answer questions using textbook content with strict grounding (no hallucination)
 - 📚 **Source Citations** - Every answer includes relevant chapter references
 - 🎯 **Context-Aware** - Supports selected text for precise answers
 - 🔍 **Semantic Search** - Find relevant content using embeddings
 - ⚡ **Fast & Scalable** - Async Python with connection pooling
+- 👤 **Personalization** - Adjust answer depth by user level (student/beginner/advanced) - no auth required
+- 🌐 **Urdu Translation** - Translate responses to Urdu while keeping retrieval in English
+- 💰 **Free Tier Model** - Uses OpenRouter free model (`meta-llama/llama-3.2-3b-instruct:free`)
+- 🛡️ **Graceful Degradation** - Never crashes on credit exhaustion, shows helpful fallback messages
 
 ## API Endpoints
 
@@ -32,7 +36,14 @@ This is the backend API for the [Physical AI & Humanoid Robotics Textbook](https
 GET /health
 ```
 
-### Chat Query
+### Credit Status Check
+```bash
+GET /api/chat/credit-status
+```
+
+Returns OpenRouter API credit availability status.
+
+### Chat Query (with Personalization)
 ```bash
 POST /api/chat/query
 Content-Type: application/json
@@ -40,7 +51,9 @@ Content-Type: application/json
 {
   "query": "What is ROS 2?",
   "max_results": 3,
-  "include_sources": true
+  "include_sources": true,
+  "user_level": "student",  // "student" | "beginner" | "advanced"
+  "language": "en"  // "en" | "ur" (Urdu)
 }
 ```
 
@@ -66,8 +79,8 @@ Response:
 Required secrets (configure in Hugging Face Space settings):
 
 ```bash
-# OpenAI
-OPENAI_API_KEY=your_openai_key
+# OpenRouter (using free model: meta-llama/llama-3.2-3b-instruct:free)
+OPENAI_API_KEY=your_openrouter_api_key
 
 # Qdrant Vector Database
 QDRANT_URL=https://your-cluster.qdrant.io
