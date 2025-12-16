@@ -412,5 +412,5 @@ async def personalization_health():
             "learning_progress_tracking": True,
             "ai_powered": True,
         },
-        "ai_model": "gpt-4-turbo-preview via OpenRouter"
+        "ai_model": "meta-llama/llama-3.2-3b-instruct:free via OpenRouter"
     }

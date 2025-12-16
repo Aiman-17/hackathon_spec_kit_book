@@ -194,7 +194,7 @@ Output ONLY the translation, no explanations."""
 {text}"""
 
             response = await self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="meta-llama/llama-3.2-3b-instruct:free",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}

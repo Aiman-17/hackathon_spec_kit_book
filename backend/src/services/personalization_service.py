@@ -156,7 +156,7 @@ Respond with a JSON array of recommendations in this format:
 Recommend {count} chapters that will help this student progress most effectively."""
 
             response = await self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="meta-llama/llama-3.2-3b-instruct:free",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
@@ -281,7 +281,7 @@ Respond with JSON:
 Provide skill gap analysis."""
 
             response = await self.client.chat.completions.create(
-                model="gpt-4-turbo-preview",
+                model="meta-llama/llama-3.2-3b-instruct:free",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
