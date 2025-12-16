@@ -174,10 +174,10 @@ description: "Production RAG Chatbot Stabilization Tasks"
 
 **Independent Test**: All deployment targets work, documentation is up-to-date
 
-- [ ] T052 [P] Update README with deployment instructions
-- [ ] T053 [P] Document free model selection and credit limits
-- [ ] T054 [P] Add troubleshooting guide for common errors
-- [ ] T055 Final verification of all phases
+- [X] T052 [P] Update README with deployment instructions
+- [X] T053 [P] Document free model selection and credit limits
+- [X] T054 [P] Add troubleshooting guide for common errors
+- [X] T055 Final verification of all phases
 
 ---
 
