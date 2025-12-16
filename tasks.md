@@ -125,12 +125,12 @@ description: "Production RAG Chatbot Stabilization Tasks"
 
 ### Mobile Navigation
 
-- [ ] T033 Create MobileNavSidebar component in frontend/src/components/MobileNavSidebar/index.tsx
-- [ ] T034 Add hamburger menu button for mobile in frontend/src/components/MobileNavSidebar/index.tsx
-- [ ] T035 Implement slide-in animation from left in frontend/src/components/MobileNavSidebar/index.tsx
-- [ ] T036 List modules, chapters, and sections in sidebar in frontend/src/components/MobileNavSidebar/index.tsx
-- [ ] T037 Integrate MobileNavSidebar into main UI in frontend/src/theme/Root.tsx
-- [ ] T038 Test mobile navigation on responsive breakpoints
+- [X] T033 Create MobileNavSidebar component in frontend/src/components/MobileNavSidebar/index.js
+- [X] T034 Add hamburger menu button for mobile in frontend/src/components/MobileNavSidebar/index.js
+- [X] T035 Implement slide-in animation from left in frontend/src/components/MobileNavSidebar/index.js
+- [X] T036 List modules, chapters, and sections in sidebar in frontend/src/components/MobileNavSidebar/index.js
+- [X] T037 Integrate MobileNavSidebar into main UI in frontend/src/theme/Root.js
+- [X] T038 Test mobile navigation on responsive breakpoints
 
 **Checkpoint**: Mobile users can navigate textbook structure via slide-in sidebar
 
