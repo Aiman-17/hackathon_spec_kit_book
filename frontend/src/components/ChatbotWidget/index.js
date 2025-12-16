@@ -15,11 +15,23 @@ const ChatbotWidget = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Backend API URL - defaults to Hugging Face Space in production
-  const API_URL = process.env.REACT_APP_BACKEND_URL ||
-                  (typeof window !== 'undefined' && window.location.hostname.includes('github.io')
-                    ? 'https://huggingface.co/spaces/mksjai/ai-robotics-rag-backend'  // Update this after creating HF Space
-                    : 'http://localhost:8000');
+  // Backend API URL - environment-safe detection (no process references)
+  const getBackendUrl = () => {
+    // Check if running in browser
+    if (typeof window === 'undefined') {
+      return 'http://localhost:8000';
+    }
+
+    // Production: GitHub Pages -> Hugging Face Space
+    if (window.location.hostname.includes('github.io')) {
+      return 'https://huggingface.co/spaces/mksjai/ai-robotics-rag-backend';  // Update after HF Space creation
+    }
+
+    // Development: localhost
+    return 'http://localhost:8000';
+  };
+
+  const API_URL = getBackendUrl();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

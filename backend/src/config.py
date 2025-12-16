@@ -128,7 +128,9 @@ class Settings(BaseSettings):
         default=[
             "http://localhost:3000",
             "https://aiman-17.github.io",
-            "https://huggingface.co"
+            "https://huggingface.co",
+            "https://*.hf.space",
+            "https://huggingface.co/spaces/*"
         ],
         description="Allowed CORS origins (comma-separated in .env)",
         validation_alias="CORS_ORIGINS"

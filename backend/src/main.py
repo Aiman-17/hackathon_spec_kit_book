@@ -111,7 +111,7 @@ setup_middleware(app)
 if settings.environment == "production":
     app.add_middleware(
         TrustedHostMiddleware,
-        allowed_hosts=["*.github.io", "localhost", "127.0.0.1"]
+        allowed_hosts=["*.github.io", "*.hf.space", "*.huggingface.co", "localhost", "127.0.0.1"]
     )
 
 
