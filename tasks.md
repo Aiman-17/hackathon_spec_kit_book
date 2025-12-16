@@ -77,11 +77,11 @@ description: "Production RAG Chatbot Stabilization Tasks"
 
 ### Frontend Personalization UI
 
-- [ ] T017 Create PersonalizationPanel component in frontend/src/components/PersonalizationPanel/index.tsx
-- [ ] T018 Add role selector (student/beginner/advanced) to PersonalizationPanel in frontend/src/components/PersonalizationPanel/index.tsx
-- [ ] T019 Add language preference toggle (English/Urdu) to PersonalizationPanel in frontend/src/components/PersonalizationPanel/index.tsx
-- [ ] T020 Store preferences in localStorage (no auth required) in frontend/src/components/PersonalizationPanel/index.tsx
-- [ ] T021 Integrate PersonalizationPanel into main UI in frontend/src/theme/Root.tsx or frontend/src/components/ChatWidget/index.tsx
+- [X] T017 Create PersonalizationPanel component in frontend/src/components/PersonalizationPanel/index.tsx
+- [X] T018 Add role selector (student/beginner/advanced) to PersonalizationPanel in frontend/src/components/PersonalizationPanel/index.tsx
+- [X] T019 Add language preference toggle (English/Urdu) to PersonalizationPanel in frontend/src/components/PersonalizationPanel/index.tsx
+- [X] T020 Store preferences in localStorage (no auth required) in frontend/src/components/PersonalizationPanel/index.tsx
+- [X] T021 Integrate PersonalizationPanel into main UI in frontend/src/theme/Root.tsx or frontend/src/components/ChatWidget/index.tsx
 
 ### Backend Personalization Integration
 
@@ -108,9 +108,9 @@ description: "Production RAG Chatbot Stabilization Tasks"
 
 ### Frontend Translation Toggle
 
-- [ ] T029 Add Urdu toggle to PersonalizationPanel in frontend/src/components/PersonalizationPanel/index.tsx
-- [ ] T030 Send language preference with chat queries in frontend/src/components/ChatWidget/index.tsx
-- [ ] T031 Display translated answers when Urdu is selected in frontend/src/components/ChatWidget/index.tsx
+- [X] T029 Add Urdu toggle to PersonalizationPanel in frontend/src/components/PersonalizationPanel/index.tsx
+- [X] T030 Send language preference with chat queries in frontend/src/components/ChatWidget/index.tsx
+- [X] T031 Display translated answers when Urdu is selected in frontend/src/components/ChatWidget/index.tsx
 - [ ] T032 Test: Urdu translation does not affect retrieval quality
 
 **Checkpoint**: Urdu translation works correctly for answers without affecting retrieval or adding hallucinations
@@ -148,7 +148,7 @@ description: "Production RAG Chatbot Stabilization Tasks"
 - [X] T040 Remove `process` references from browser code in frontend/src/**
 - [X] T041 Ensure environment-safe config in frontend/src/config or frontend/.env
 - [X] T042 Build frontend with npm run build in frontend/
-- [ ] T043 Push build artifacts to GitHub Pages
+- [ ] T043 Push build artifacts to GitHub Pages (Manual: Set GIT_USER env var OR use: cd frontend && GIT_USER=Aiman-17 npm run deploy OR setup GitHub Actions)
 
 ### Backend Deployment
 

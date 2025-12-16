@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './styles.module.css';
+import PersonalizationPanel from '../PersonalizationPanel';
 
 const ChatbotWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,9 @@ const ChatbotWidget = () => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [userLevel, setUserLevel] = useState('student');
+  const [language, setLanguage] = useState('en');
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -47,6 +51,27 @@ const ChatbotWidget = () => {
     }
   }, [isOpen]);
 
+  // Load user preferences from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedLevel = localStorage.getItem('userLevel') || 'student';
+      const savedLanguage = localStorage.getItem('language') || 'en';
+      setUserLevel(savedLevel);
+      setLanguage(savedLanguage);
+    } catch (error) {
+      console.error('Failed to load preferences:', error);
+    }
+
+    // Listen for preference changes from PersonalizationPanel
+    const handlePreferenceChange = (event) => {
+      setUserLevel(event.detail.userLevel);
+      setLanguage(event.detail.language);
+    };
+
+    window.addEventListener('preferencesChanged', handlePreferenceChange);
+    return () => window.removeEventListener('preferencesChanged', handlePreferenceChange);
+  }, []);
+
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
 
@@ -69,7 +94,9 @@ const ChatbotWidget = () => {
         body: JSON.stringify({
           query: inputValue,
           max_results: 3,
-          include_sources: true
+          include_sources: true,
+          user_level: userLevel,  // Personalization
+          language: language      // Translation
         })
       });
 
@@ -116,6 +143,12 @@ const ChatbotWidget = () => {
 
   return (
     <div className={styles.chatbotContainer}>
+      {/* Personalization Settings Panel */}
+      <PersonalizationPanel
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
+
       {isOpen && (
         <div className={styles.chatWindow}>
           <div className={styles.chatHeader}>
@@ -123,15 +156,26 @@ const ChatbotWidget = () => {
               <div className={styles.botIcon}>🤖</div>
               <div>
                 <div className={styles.botName}>AI Robotics Tutor</div>
-                <div className={styles.botStatus}>Online</div>
+                <div className={styles.botStatus}>
+                  {language === 'ur' ? '🇵🇰 Urdu' : '🇺🇸 English'} • {userLevel}
+                </div>
               </div>
             </div>
-            <button
-              className={styles.closeButton}
-              onClick={toggleChat}
-              aria-label="Close chat">
-              ✕
-            </button>
+            <div className={styles.headerButtons}>
+              <button
+                className={styles.settingsButton}
+                onClick={() => setIsSettingsOpen(true)}
+                aria-label="Open settings"
+                title="Personalization Settings">
+                ⚙️
+              </button>
+              <button
+                className={styles.closeButton}
+                onClick={toggleChat}
+                aria-label="Close chat">
+                ✕
+              </button>
+            </div>
           </div>
 
           <div className={styles.messagesContainer}>
