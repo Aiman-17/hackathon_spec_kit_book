@@ -37,6 +37,9 @@ class ChatRequest(BaseModel):
     conversation_id: Optional[str] = Field(None, description="Conversation ID for history tracking")
     max_results: int = Field(3, description="Maximum number of relevant chunks to retrieve", ge=1, le=10)
     include_sources: bool = Field(True, description="Whether to include source citations")
+    # Personalization parameters (no auth required - from localStorage)
+    user_level: Optional[str] = Field("student", description="User level: student, beginner, or advanced")
+    language: Optional[str] = Field("en", description="Response language: en or ur")
 
 
 class SourceCitation(BaseModel):
@@ -109,19 +112,24 @@ async def retrieve_relevant_chunks(query: str, max_results: int = 3, context: Op
         )
 
 
-async def generate_rag_response(query: str, relevant_chunks: List[Dict[str, Any]]) -> str:
+async def generate_rag_response(
+    query: str,
+    relevant_chunks: List[Dict[str, Any]],
+    user_level: str = "student"
+) -> str:
     """
-    Generate a response using OpenAI with RAG context.
+    Generate a response using OpenRouter with RAG context.
 
     Args:
         query: User's question
         relevant_chunks: Retrieved chunks from vector database
 
     Returns:
-        Generated answer
+        Generated answer or fallback message if credits exhausted
     """
     try:
         from openai import AsyncOpenAI
+        from openai import RateLimitError, APIError
 
         client = AsyncOpenAI(
             api_key=settings.openai_api_key,
@@ -142,27 +150,36 @@ async def generate_rag_response(query: str, relevant_chunks: List[Dict[str, Any]
 
         context = "\n\n".join(context_parts)
 
-        # System prompt for RAG with explicit reasoning
-        system_prompt = """You are an expert tutor for the Physical AI & Humanoid Robotics textbook.
-Your role is to answer students' questions using ONLY the provided textbook content.
+        # Adjust tone/depth based on user level
+        level_instructions = {
+            "student": "Provide clear, accessible explanations suitable for students new to robotics.",
+            "beginner": "Provide straightforward explanations with some technical detail.",
+            "advanced": "Provide concise, technical explanations assuming robotics knowledge."
+        }
+        level_instruction = level_instructions.get(user_level, level_instructions["student"])
+
+        # System prompt for RAG - textbook as single source of truth
+        system_prompt = f"""You are an expert tutor for the Physical AI & Humanoid Robotics textbook.
+Your role is to answer questions using ONLY the provided textbook content.
 
 CRITICAL RULES:
-1. ONLY use information from the provided textbook sources
-2. If the sources don't contain relevant information, explicitly state: "The textbook content provided does not contain information about [topic]. Please ask about topics covered in the Physical AI & Humanoid Robotics course."
+1. The textbook is the SINGLE SOURCE OF TRUTH - use ONLY information from the provided sources
+2. If sources exist for the query topic, ALWAYS provide an answer - NEVER reject valid textbook queries
 3. NEVER make up, infer, or hallucinate information not present in the sources
-4. Always cite specific chapters/sections when using information
+4. NEVER use external facts or knowledge beyond the retrieved chunks
+5. Keep answers concise:
+   - Definitions: 6-7 lines maximum
+   - Explanations: brief and focused, no verbosity
+6. NO over-quoting or long citations - summarize key points
 
 ANSWER FORMAT:
-1. Start with a brief answer (1-2 sentences)
-2. Provide reasoning steps explaining how you arrived at the answer from the sources
-3. Include specific citations in the format: [Source X: Chapter Name / Section Name]
-4. If uncertain or information is incomplete, explicitly state the limitation
+1. Brief answer (1-2 sentences) anchored to sources
+2. Concise reasoning from the retrieved chunks only
+3. Minimal citations: [Source X: Chapter/Section]
 
-Examples:
-- Good: "ROS 2 uses a distributed architecture [Source 1: Introduction to ROS 2 / Architecture]. This means..."
-- Bad: "ROS 2 is commonly used..." (no citation)
-- Good: "The textbook content provided does not contain information about underwater robotics."
-- Bad: Making up an answer about underwater robotics"""
+PERSONALIZATION: {level_instruction}
+
+ALWAYS ANSWER if chunks exist - trust that retrieval matched the query to textbook content."""
 
         # User prompt with context
         user_prompt = f"""Based on the following textbook content, answer this question:
@@ -173,29 +190,64 @@ Examples:
 {context}
 
 **Instructions:**
-1. First, determine if the sources contain relevant information to answer the question
-2. If yes, provide a clear answer with reasoning steps and citations
-3. If no, state that the information is not in the textbook
-4. Use the format: Answer → Reasoning → Citations
+1. The sources above were retrieved as relevant to the question
+2. Provide a concise answer using ONLY the information in these sources
+3. Keep response brief (6-7 lines for definitions, concise for explanations)
+4. Never add external information or make inferences beyond the text
 
 **Your Response:**"""
 
-        # Call OpenAI API
+        # Call OpenRouter API with best free model
         response = await client.chat.completions.create(
-            model="gpt-4-turbo-preview",
+            model="meta-llama/llama-3.2-3b-instruct:free",  # Free tier model
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            temperature=0.7,
-            max_tokens=800,
+            temperature=0.3,  # Lower temperature for more focused answers
+            max_tokens=400,  # Reduced to enforce brevity
         )
 
         answer = response.choices[0].message.content
         return answer
 
+    except RateLimitError as e:
+        # Credit exhaustion - return graceful fallback with retrieved content summary
+        logger.warning(f"OpenRouter credit limit reached: {str(e)}")
+
+        # Provide fallback using retrieved chunks
+        fallback_answer = "⚠️ The AI service is temporarily unavailable due to usage limits.\n\n"
+        fallback_answer += "The system retrieved relevant textbook sections, but cannot generate a full response right now.\n\n"
+        fallback_answer += "**Retrieved content:**\n"
+
+        for i, chunk in enumerate(relevant_chunks[:2], 1):  # Show first 2 chunks
+            payload = chunk.get("payload", {})
+            content = payload.get("content", "")[:300]  # First 300 chars
+            chapter = payload.get("chapter_title", "Unknown")
+            fallback_answer += f"\n[Source {i} - {chapter}]\n{content}...\n"
+
+        fallback_answer += "\nPlease try again later."
+        return fallback_answer
+
+    except APIError as e:
+        # Handle 402 Payment Required and other API errors gracefully
+        if "402" in str(e) or "payment" in str(e).lower() or "credit" in str(e).lower():
+            logger.warning(f"OpenRouter payment/credit error: {str(e)}")
+
+            fallback_answer = "⚠️ The AI service is temporarily unavailable due to usage limits.\n\n"
+            fallback_answer += "The system retrieved relevant textbook sections, but cannot generate a full response right now.\n\n"
+            fallback_answer += "Please try again later."
+            return fallback_answer
+        else:
+            # Other API errors - log and raise with user-friendly message
+            logger.error(f"OpenRouter API error: {str(e)}")
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="The AI service encountered an error. Please try again."
+            )
+
     except Exception as e:
-        logger.error(f"Failed to generate RAG response: {str(e)}")
+        logger.error(f"Unexpected error in RAG response: {str(e)}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to generate response: {str(e)}"
@@ -249,8 +301,24 @@ Please try:
                 conversation_id=request.conversation_id
             )
 
-        # Step 2: Generate answer using RAG
-        answer = await generate_rag_response(request.query, relevant_chunks)
+        # Step 2: Generate answer using RAG (with personalization)
+        answer = await generate_rag_response(
+            query=request.query,
+            relevant_chunks=relevant_chunks,
+            user_level=request.user_level
+        )
+
+        # Step 2.5: Translate to Urdu if requested
+        if request.language == "ur":
+            try:
+                from src.services.translation_service import translation_service
+                answer = await translation_service.translate_to_urdu(
+                    text=answer,
+                    preserve_formatting=True
+                )
+            except Exception as e:
+                logger.warning(f"Translation failed, returning English: {str(e)}")
+                # Continue with English answer if translation fails
 
         # Step 3: Prepare source citations
         sources = []
@@ -302,3 +370,49 @@ async def chat_health():
             "conversation_history": False,  # TODO: Phase 4
         }
     }
+
+
+@router.get("/credit-status")
+async def check_credit_status():
+    """
+    Check OpenRouter API credit status.
+
+    Returns:
+        Credit availability status
+    """
+    try:
+        from openai import AsyncOpenAI
+
+        client = AsyncOpenAI(
+            api_key=settings.openai_api_key,
+            base_url="https://openrouter.ai/api/v1"
+        )
+
+        # Attempt a minimal API call to check credit availability
+        response = await client.chat.completions.create(
+            model="meta-llama/llama-3.2-3b-instruct:free",
+            messages=[{"role": "user", "content": "test"}],
+            max_tokens=1
+        )
+
+        return {
+            "status": "available",
+            "model": "meta-llama/llama-3.2-3b-instruct:free",
+            "message": "API credits available"
+        }
+
+    except Exception as e:
+        error_str = str(e).lower()
+        if "402" in error_str or "payment" in error_str or "credit" in error_str or "rate" in error_str:
+            return {
+                "status": "exhausted",
+                "model": "meta-llama/llama-3.2-3b-instruct:free",
+                "message": "API credits exhausted or rate limited"
+            }
+        else:
+            logger.error(f"Credit status check failed: {str(e)}")
+            return {
+                "status": "unknown",
+                "model": "meta-llama/llama-3.2-3b-instruct:free",
+                "message": f"Unable to check status: {str(e)}"
+            }
