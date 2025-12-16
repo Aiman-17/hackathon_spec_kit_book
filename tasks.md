@@ -148,7 +148,7 @@ description: "Production RAG Chatbot Stabilization Tasks"
 - [X] T040 Remove `process` references from browser code in frontend/src/**
 - [X] T041 Ensure environment-safe config in frontend/src/config or frontend/.env
 - [X] T042 Build frontend with npm run build in frontend/
-- [ ] T043 Push build artifacts to GitHub Pages (Manual: Set GIT_USER env var OR use: cd frontend && GIT_USER=Aiman-17 npm run deploy OR setup GitHub Actions)
+- [X] T043 Push build artifacts to GitHub Pages (Manual: Set GIT_USER env var OR use: cd frontend && GIT_USER=Aiman-17 npm run deploy OR setup GitHub Actions)
 
 ### Backend Deployment
 
