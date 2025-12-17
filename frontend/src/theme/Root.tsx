@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import ChatWidget from '../components/ChatWidget';
+import ChatbotWidget from '../components/ChatbotWidget';
 import MobileNavSidebar from '../components/MobileNavSidebar';
 
 export default function Root({ children }) {
@@ -14,7 +14,7 @@ export default function Root({ children }) {
     <>
       <MobileNavSidebar />
       {children}
-      <ChatWidget />
+      <ChatbotWidget />
     </>
   );
 }
