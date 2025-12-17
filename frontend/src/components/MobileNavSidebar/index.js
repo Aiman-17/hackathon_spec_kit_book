@@ -5,7 +5,13 @@ import styles from './styles.module.css';
 
 const MobileNavSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [expandedModules, setExpandedModules] = useState({});
+  // Initialize all modules as expanded (0, 1, 2, 3 for the 4 modules)
+  const [expandedModules, setExpandedModules] = useState({
+    0: true,
+    1: true,
+    2: true,
+    3: true
+  });
   const { siteConfig } = useDocusaurusContext();
 
   // Close sidebar when clicking outside
@@ -99,7 +105,7 @@ const MobileNavSidebar = () => {
     <>
       {/* Hamburger Menu Button */}
       <button
-        className={styles.hamburger}
+        className={`${styles.hamburger} ${isOpen ? styles.hidden : ''}`}
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle navigation menu"
       >

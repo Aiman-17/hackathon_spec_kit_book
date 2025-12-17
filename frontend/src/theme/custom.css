@@ -120,6 +120,32 @@ h3 {
   box-shadow: 0 4px 20px rgba(0, 229, 255, 0.1);
 }
 
+/* Hide ONLY the old Docusaurus hamburger menu button on mobile/tablet */
+@media (max-width: 996px) {
+  .navbar__toggle {
+    display: none !important;
+  }
+
+  /* Adjust navbar and inner padding for pixel-perfect alignment */
+  .navbar {
+    padding-left: 30px;
+  }
+
+  /* Remove gaps between hamburger, logo, and title */
+  .navbar__inner {
+    padding-left: 30px;
+  }
+
+  .navbar__brand {
+    margin-right: 0;
+    padding-right: 0.5rem;
+  }
+
+  .navbar__logo {
+    margin-right: 0.25rem;
+  }
+}
+
 .navbar__title {
   font-family: var(--ifm-heading-font-family);
   font-weight: 700;
@@ -128,6 +154,7 @@ h3 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  padding: 0;
 }
 
 .navbar__link {
@@ -155,40 +182,7 @@ h3 {
   width: 100%;
 }
 
-/* ==========================================
-   SIDEBAR
-   ========================================== */
-.menu {
-  background: rgba(19, 47, 76, 0.6);
-  border-right: 1px solid rgba(0, 229, 255, 0.2);
-  padding: 1rem;
-}
 
-.menu__link {
-  border-radius: var(--ifm-global-radius);
-  transition: var(--ifm-transition-fast);
-  padding: 0.5rem 0.75rem;
-  margin: 0.25rem 0;
-}
-
-.menu__link:hover {
-  background: rgba(0, 229, 255, 0.1);
-  color: var(--ifm-color-primary);
-  box-shadow: inset 3px 0 0 var(--ifm-color-primary);
-}
-
-.menu__link--active {
-  background: rgba(0, 229, 255, 0.15);
-  color: var(--ifm-color-primary);
-  font-weight: 600;
-  box-shadow: inset 3px 0 0 var(--ifm-color-primary);
-}
-
-.menu__list-item-collapsible {
-  border-left: 2px solid rgba(0, 229, 255, 0.2);
-  margin-left: 0.5rem;
-  padding-left: 0.5rem;
-}
 
 /* ==========================================
    CONTENT AREA
