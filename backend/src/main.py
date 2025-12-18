@@ -93,9 +93,9 @@ app = FastAPI(
     title="AI-Native Textbook & RAG System",
     description="Backend API for Physical AI & Humanoid Robotics Textbook with RAG-powered chatbot, personalization, and intelligent agent features",
     version="1.0.0",
-    docs_url="/api/docs" if settings.debug else None,
-    redoc_url="/api/redoc" if settings.debug else None,
-    openapi_url="/api/openapi.json" if settings.debug else None,
+    docs_url="/api/docs",  # Always enabled for easier debugging
+    redoc_url="/api/redoc",  # Always enabled
+    openapi_url="/api/openapi.json",  # Always enabled
     lifespan=lifespan,
 )
 
@@ -170,14 +170,26 @@ async def general_exception_handler(request: Request, exc: Exception):
 @app.get("/", tags=["System"])
 async def root() -> Dict[str, Any]:
     """
-    Root endpoint - API information
+    Root endpoint - API information and quick links
     """
     return {
         "service": "AI-Native Textbook & RAG System",
         "version": "1.0.0",
         "status": "operational",
+        "message": "Backend API is running successfully",
         "environment": settings.environment,
-        "docs": "/api/docs" if settings.debug else "disabled",
+        "endpoints": {
+            "health": "/health",
+            "api_docs": "/api/docs",
+            "redoc": "/api/redoc",
+            "chat": "/api/chat/query",
+            "config": "/api/config"
+        },
+        "features": {
+            "personalization": settings.enable_personalization,
+            "translation": settings.enable_translation,
+            "agent_skills": settings.enable_agent_skills
+        },
         "timestamp": datetime.utcnow().isoformat(),
     }
 
