@@ -222,7 +222,7 @@ const ChatbotWidget = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about ROS 2, SLAM, robotics concepts..."
+              placeholder="Type your question here..."
               rows={1}
               disabled={isLoading}
             />
