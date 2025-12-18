@@ -28,7 +28,7 @@ const ChatbotWidget = () => {
 
     // Production: GitHub Pages -> Hugging Face Space
     if (window.location.hostname.includes('github.io')) {
-      return 'https://huggingface.co/spaces/mksjai/ai-robotics-rag-backend';  // Update after HF Space creation
+      return 'https://mksjai-ai-robotics-rag-backend.hf.space';
     }
 
     // Development: localhost
