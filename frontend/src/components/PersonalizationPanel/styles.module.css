@@ -97,6 +97,9 @@
   margin-bottom: 8px;
   color: var(--ifm-font-color-base, #1c1e21);
 }
+.radioText_Iq_6 {
+  color: #FFFFFF;
+}
 
 .labelIcon {
   font-size: 1.2rem;
