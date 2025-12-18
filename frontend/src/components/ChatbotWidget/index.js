@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { MessageCircle, X, Send } from 'lucide-react';
 import styles from './styles.module.css';
 import PersonalizationPanel from '../PersonalizationPanel';
 
@@ -231,7 +232,7 @@ const ChatbotWidget = () => {
               onClick={handleSendMessage}
               disabled={!inputValue.trim() || isLoading}
               aria-label="Send message">
-              {isLoading ? '⏳' : '➤'}
+              {isLoading ? '...' : <Send size={18} />}
             </button>
           </div>
         </div>
@@ -241,7 +242,7 @@ const ChatbotWidget = () => {
         className={`${styles.chatToggle} ${isOpen ? styles.chatToggleOpen : ''}`}
         onClick={toggleChat}
         aria-label={isOpen ? 'Close chat' : 'Open chat'}>
-        {isOpen ? '✕' : '💬'}
+        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </button>
     </div>
   );
